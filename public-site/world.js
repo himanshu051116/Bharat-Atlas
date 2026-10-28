@@ -237,11 +237,21 @@ $('grid-toggle').addEventListener('click',()=>{state.grid=!state.grid;$('grid-to
 $('zoom-plus').addEventListener('click',()=>zoom(.65));$('zoom-minus').addEventListener('click',()=>zoom(1.5));$('zoom-reset').addEventListener('click',overview);$('world-home').addEventListener('click',overview);$('view-world').addEventListener('click',overview);$('view-asia').addEventListener('click',gotoAsia);$('view-india').addEventListener('click',gotoIndia);
 // Trackpad wheel and mouse wheel use direct anchored zoom. Repeated events must
 // never restart an easing animation: that was the main zoom oscillation bug.
+// Keep world wheel zoom anchored to the visual center, not the cursor.
+// Collapse high-frequency trackpad events into one SVG viewBox update per frame.
+let worldWheelDelta=0,worldWheelFrame=0;
 svg.addEventListener('wheel',e=>{
- e.preventDefault();
+ e.preventDefault();e.stopPropagation();
  const normalized=e.deltaY*(e.deltaMode===1?16:e.deltaMode===2?140:1);
- const factor=Math.exp(Math.max(-200,Math.min(200,normalized))*.0017);
- zoom(factor,coordsFromPoint(e.clientX,e.clientY),0);
+ if(!Number.isFinite(normalized)||Math.abs(normalized)<.01)return;
+ worldWheelDelta+=Math.max(-130,Math.min(130,normalized));
+ if(worldWheelFrame)return;
+ worldWheelFrame=requestAnimationFrame(()=>{
+  worldWheelFrame=0;
+  const delta=Math.max(-210,Math.min(210,worldWheelDelta));
+  worldWheelDelta=0;
+  zoom(Math.exp(delta*.0015),null,0);
+ });
 },{passive:false});
 svg.addEventListener('pointerdown',e=>{if(e.button!==0&&e.pointerType==='mouse')return;if(state.animation){cancelAnimationFrame(state.animation);state.animation=null}state.pointers.set(e.pointerId,{clientX:e.clientX,clientY:e.clientY});if(state.pointers.size===1){state.drag={id:e.pointerId,x:e.clientX,y:e.clientY,old:{...state.view},moved:false};svg.classList.add('dragging')}else{state.drag=null;const pp=[...state.pointers.values()];const midX=(pp[0].clientX+pp[1].clientX)/2,midY=(pp[0].clientY+pp[1].clientY)/2;
  const rect=svg.getBoundingClientRect();

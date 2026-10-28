@@ -56,3 +56,11 @@ test('map wheel zoom preserves the geographic center and coalesces events',()=>{
  assert.match(app,/map\.easeTo\(\{zoom:target,center:map\.getCenter\(\),duration:/);
  assert.doesNotMatch(app,/app\.map\.zoomIn\(\{duration:/);
 });
+
+
+test('world wheel zoom also batches input without vertical cursor drift',()=>{
+ const world=read('public-site/world.js');
+ assert.match(world,/let worldWheelDelta=0,worldWheelFrame=0/);
+ assert.match(world,/zoom\(Math\.exp\(delta\*\.0015\),null,0\)/);
+ assert.doesNotMatch(world,/zoom\(factor,coordsFromPoint\(e\.clientX,e\.clientY\),0\)/);
+});
