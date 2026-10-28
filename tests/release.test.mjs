@@ -62,5 +62,6 @@ test('world wheel zoom also batches input without vertical cursor drift',()=>{
  const world=read('public-site/world.js');
  assert.match(world,/let worldWheelDelta=0,worldWheelFrame=0/);
  assert.match(world,/zoom\(Math\.exp\(delta\*\.0015\),null,0\)/);
+ assert.match(world,/y:a\.y-ry\*\(newW\/2\)/);
  assert.doesNotMatch(world,/zoom\(factor,coordsFromPoint\(e\.clientX,e\.clientY\),0\)/);
 });

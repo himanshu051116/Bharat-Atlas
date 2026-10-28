@@ -77,7 +77,7 @@ function overview(){animateView({x:0,y:0,w:width},700);setActiveView('world')}
 function setActiveView(key){for(const v of ['world','asia','india']){const b=$('view-'+v);b.classList.toggle('active',v===key);b.setAttribute('aria-pressed',String(v===key))}}
 function gotoIndia(){gotoExtent(state.officialIndiaBounds||[67,5,101,38],70);setActiveView('india')}
 function gotoAsia(){gotoExtent([28,-10,180,81],75);setActiveView('asia')}
-function zoom(factor,anchor,duration=145){const v=state.view;const newW=Math.max(18,Math.min(width,v.w*factor));const a=anchor||{x:v.x+v.w/2,y:v.y+v.h/2};const rx=(a.x-v.x)/v.w,ry=(a.y-v.y)/v.h;const next={x:a.x-rx*newW,y:a.y-ry*newW,w:newW};
+function zoom(factor,anchor,duration=145){const v=state.view;const newW=Math.max(18,Math.min(width,v.w*factor));const a=anchor||{x:v.x+v.w/2,y:v.y+v.h/2};const rx=(a.x-v.x)/v.w,ry=(a.y-v.y)/v.h;const next={x:a.x-rx*newW,y:a.y-ry*(newW/2),w:newW};
  if(duration===0){if(state.animation){cancelAnimationFrame(state.animation);state.animation=null}setView(next)}
  else animateView(next,duration)}
 function coordsFromPoint(clientX,clientY){try{const p=svg.createSVGPoint();p.x=clientX;p.y=clientY;const out=p.matrixTransform(svg.getScreenCTM().inverse());return{x:out.x,y:out.y}}catch(_){const r=svg.getBoundingClientRect(),v=state.view;return{x:v.x+(clientX-r.left)/r.width*v.w,y:v.y+(clientY-r.top)/r.height*v.h}}}
