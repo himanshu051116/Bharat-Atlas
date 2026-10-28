@@ -1214,7 +1214,7 @@ function mapStyle(theme='terrain',tileCatalog=null,transportCatalog=null){
   const palette=theme==='outline'?['#fafcfb','#fafcfb','#fafcfb','#fafcfb','#fafcfb']:theme==='ink'?['#e9ebe9','#dadfdf','#f0ece6','#e1e5e2','#e8ded8']:hues;
   const fill=['match',['get','palette'],0,palette[0],1,palette[1],2,palette[2],3,palette[3],4,palette[4],palette[0]];
   return {version:8,name:`Bharat Atlas — ${theme}`, // MapLibre >=5.11 resolves fonts locally; no demo glyph network request.
-    sources:{grid:{type:'geojson',data:graticule()},regions:{type:'geojson',data:{type:'FeatureCollection',features:[]}},'official-india-claim':{type:'geojson',data:{type:'FeatureCollection',features:[]}},'land-mask':{type:'geojson',data:{type:'FeatureCollection',features:[]}},labels:{type:'geojson',data:{type:'FeatureCollection',features:[]}},checkpoints:{type:'geojson',data:{type:'FeatureCollection',features:[]}},'pilot-places':{type:'geojson',data:pilotFeatureCollection()},'search-location':{type:'geojson',data:{type:'FeatureCollection',features:[]}},'gazetteer-places':{type:'geojson',data:{type:'FeatureCollection',features:[]}},'atlas-measure':{type:'geojson',data:{type:'FeatureCollection',features:[]}},'atlas-user-overlay':{type:'geojson',data:{type:'FeatureCollection',features:[]}},'atlas-route':{type:'geojson',data:{type:'FeatureCollection',features:[]}},'atlas-journey-trail':{type:'geojson',data:{type:'FeatureCollection',features:[]}},'atlas-comparison':{type:'geojson',data:{type:'FeatureCollection',features:[]}},...(tileCatalog?{'local-detail':tileSourceSpec(tileCatalog)}:{}),...modern.sources},
+    sources:{grid:{type:'geojson',data:graticule()},regions:{type:'geojson',data:{type:'FeatureCollection',features:[]}},'official-india-claim':{type:'geojson',data:{type:'FeatureCollection',features:[]}},'soi-state-boundaries':{type:'geojson',data:{type:'FeatureCollection',features:[]}},'land-mask':{type:'geojson',data:{type:'FeatureCollection',features:[]}},labels:{type:'geojson',data:{type:'FeatureCollection',features:[]}},checkpoints:{type:'geojson',data:{type:'FeatureCollection',features:[]}},'pilot-places':{type:'geojson',data:pilotFeatureCollection()},'search-location':{type:'geojson',data:{type:'FeatureCollection',features:[]}},'gazetteer-places':{type:'geojson',data:{type:'FeatureCollection',features:[]}},'atlas-measure':{type:'geojson',data:{type:'FeatureCollection',features:[]}},'atlas-user-overlay':{type:'geojson',data:{type:'FeatureCollection',features:[]}},'atlas-route':{type:'geojson',data:{type:'FeatureCollection',features:[]}},'atlas-journey-trail':{type:'geojson',data:{type:'FeatureCollection',features:[]}},'atlas-comparison':{type:'geojson',data:{type:'FeatureCollection',features:[]}},...(tileCatalog?{'local-detail':tileSourceSpec(tileCatalog)}:{}),...modern.sources},
     layers:[
       {id:'sea',type:'background',paint:{'background-color':theme==='ink'?'#eef1f3':'#edf5f6'}},
       {id:'land-fill',type:'fill',source:'land-mask',paint:{'fill-color':theme==='physical'?'#d3e3c9':theme==='ink'?'#dde3e1':theme==='outline'?'#f8faf7':'#e0e8d8','fill-opacity':0.94}},
@@ -1222,6 +1222,8 @@ function mapStyle(theme='terrain',tileCatalog=null,transportCatalog=null){
       {id:'graticule',type:'line',source:'grid',layout:{visibility:'visible'},paint:{'line-color':'#a7c0c3','line-opacity':.35,'line-width':.7,'line-dasharray':[2,4]}},
       {id:'regions-fill',type:'fill',source:'regions',paint:{'fill-color':fill,'fill-opacity':theme==='physical'?0.07:1}},
       {id:'official-india-claim-line',type:'line',source:'official-india-claim',paint:{'line-color':'#b06527','line-width':['interpolate',['linear'],['zoom'],2,2,8,4],'line-opacity':0.94,'line-dasharray':[2,1]}},
+      {id:'soi-state-fill',type:'fill',source:'soi-state-boundaries',paint:{'fill-color':'#e3c69c','fill-opacity':0.08}},
+      {id:'soi-state-line',type:'line',source:'soi-state-boundaries',paint:{'line-color':'#9a542c','line-width':['interpolate',['linear'],['zoom'],3,1.3,7,2],'line-opacity':0.92}},
       {id:'regions-border',type:'line',source:'regions',paint:{'line-color':theme==='ink'?'#70827e':'#829b8b','line-opacity':theme==='physical'?0.36:1,'line-width':['interpolate',['linear'],['zoom'],2,0.65,6,1.2,10,1.8]}},
       {id:'regions-hover',type:'fill',source:'regions',filter:['==',['get','name'],'@@NO_REGION@@'],paint:{'fill-color':'#2e776c','fill-opacity':.12}},
       {id:'regions-selected',type:'line',source:'regions',filter:['==',['get','name'],'@@NO_REGION@@'],paint:{'line-color':'#08756c','line-width':['interpolate',['linear'],['zoom'],2,2.1,8,3.8]}},
@@ -2436,7 +2438,7 @@ function setupFallbackSVG(svg){
   applyFallbackCamera();atlasToolkit?.fallbackReady(svg);atlasComparison?.fallbackReady(svg);
   const selected=app.selectedPlace||app.selectedCoordinate;if(selected)focusFallbackCoordinate(selected.lon,selected.lat);
 }
-const app={map:null,rendererFailure:null,ready:false,features:null,audit:null,source:null,selected:'',selectedCatalogRegion:null,selectedPlace:null,selectedCoordinate:null,hovered:'',style:'terrain',styleEpoch:0,labels:true,places:true,rivers:true,hydrology:null,shores:true,shorelines:null,landcover:null,checks:false,officialClaim:null,filter:'all',requestId:0,abort:null,toastTimer:null,tileCatalog:null,transportCatalog:null,gazetteerPlaces:[],gazetteerMeta:null,searchIndex:null,indexMatches:[],indexSearchEpoch:0,boundaryLoadFailed:false,rendererAttempts:0,lastRendererAttemptAt:0,rendererStatus:'not_tested',rendererReason:''};
+const app={map:null,rendererFailure:null,ready:false,features:null,audit:null,source:null,selected:'',selectedCatalogRegion:null,selectedPlace:null,selectedCoordinate:null,hovered:'',style:'terrain',styleEpoch:0,labels:true,places:true,rivers:true,hydrology:null,shores:true,shorelines:null,landcover:null,checks:false,officialClaim:null,soiStates:null,soiStateDetails:null,soiOutlineDetails:null,filter:'all',requestId:0,abort:null,toastTimer:null,tileCatalog:null,transportCatalog:null,gazetteerPlaces:[],gazetteerMeta:null,searchIndex:null,indexMatches:[],indexSearchEpoch:0,boundaryLoadFailed:false,rendererAttempts:0,lastRendererAttemptAt:0,rendererStatus:'not_tested',rendererReason:''};
 function toast(msg){const el=$('toast');el.textContent=msg;el.hidden=false;clearTimeout(app.toastTimer);app.toastTimer=setTimeout(()=>{el.hidden=true},4100)}
 function overlay(title,message,button=false){$('map-stage').classList.remove('fallback-active');const el=$('map-overlay');el.classList.remove('fallback-preview');el.hidden=false;el.replaceChildren();const icon=document.createElement('span');icon.className=button?'error-icon':'spinner';icon.textContent=button?'!':'';const b=document.createElement('strong');b.textContent=title;const p=document.createElement('p');p.textContent=message;el.append(icon,b,p);if(button){const retry=document.createElement('button');retry.textContent='Retry loading';retry.addEventListener('click',()=>fetchPreview());el.append(retry)}}
 function rendererDiagnosticSnapshot(){
@@ -2643,6 +2645,7 @@ function syncMapData(){
   if(!app.ready||!app.map)return;
   mapSource('regions')?.setData(app.features||{type:'FeatureCollection',features:[]});
   mapSource('official-india-claim')?.setData(app.officialClaim||{type:'FeatureCollection',features:[]});
+  mapSource('soi-state-boundaries')?.setData(app.soiStates||{type:'FeatureCollection',features:[]});
   mapSource('land-mask')?.setData(app.source?.kind==='import'?{type:'FeatureCollection',features:[]}:app.landcover||{type:'FeatureCollection',features:[]});
   mapSource('labels')?.setData(app.features?labelCollection(app.features):{type:'FeatureCollection',features:[]});
   mapSource('gazetteer-places')?.setData(gazetteerFeatures(app.gazetteerPlaces));
@@ -2860,6 +2863,48 @@ async function importFile(file){if(!file)return;
   }catch(e){toast(`Import rejected: ${e.message}`)}
   finally{$('file-input').value=''}
 }
+
+function loadLocalSoIBoundary(file){
+  const status=$('soi-import-status'),button=$('soi-import-btn');
+  if(!file)return;
+  if(!/\.(zip|rar)$/i.test(file.name)){status.textContent='Choose the official .rar or .zip archive';return}
+  if(file.size>250*1024*1024){status.textContent='The archive exceeds the 250 MB browser limit';return}
+  button.disabled=true;
+  status.textContent='Opening official archive on this device; no upload to our servers…';
+  const worker=new Worker('./vendor/soi-archive-worker.mjs',{type:'module'});
+  const timeout=setTimeout(()=>{worker.terminate();button.disabled=false;status.textContent='Import timed out; try a desktop browser or extract only the State Boundary files as a ZIP.'},230000);
+  const done=()=>{clearTimeout(timeout);worker.terminate();button.disabled=false;$('soi-file-input').value=''};
+  worker.onmessage=e=>{
+    const info=e.data||{};
+    if(info.type==='progress'){status.textContent=info.text;return}
+    if(info.type==='error'){done();status.textContent='Archive not loaded: '+info.message;return}
+    if(info.type!=='success')return;
+    const {data,details}=info;
+    if(details.type==='outline'){
+      app.officialClaim=data;
+      app.soiOutlineDetails=details;
+      status.textContent='Survey of India February 2026 national outline installed ('+details.vertices.toLocaleString('en-IN')+' points). State/UT borders still require the ABDB RAR.';
+    }else{
+      app.soiStates=data;
+      app.soiStateDetails=details;
+      status.textContent='State/UT boundary layer loaded from '+details.features+' local polygons. Dataset format validated; compare against SoI 2026 political map before relying on it.';
+    }
+    if(app.ready)syncMapData();
+    updateStyleButtons();
+    if(details.type==='states'){
+      setStyle('terrain');
+      $('region-coverage-tag').textContent=details.features+' SOI-FORMAT OUTLINES · LOCAL IMPORT · REVIEW NEEDED';
+      $('map-source-status').textContent='LOCAL SOI-FORMAT ADMINISTRATIVE SHAPES · SOURCE REVIEW PENDING';
+    }else{
+      $('map-source-status').textContent='SOI 2026 NATIONAL OUTLINE · 1:16M · STATES NOT INSTALLED';
+    }
+    if(app.rendererStatus==='fallback'&&app.landcover)rendererFallback('Static research viewer','Official outline imported locally; interactive renderer is unavailable.');
+    done();
+  };
+  worker.onerror=event=>{done();status.textContent='Browser archive reader failed. Use a ZIP containing the State Boundary .shp, .dbf, .prj and .shx files.';console.warn('Official archive reader error',event.message)};
+  worker.postMessage({file});
+}
+
 function saveBlob(blob,name){const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}
 function downloadSVG(){if(!app.features&&!app.landcover)return;try{
   if(!app.features){const file=renderPhysicalOnlySVG({land:app.landcover,hydrology:app.rivers?app.hydrology:null,shorelines:app.shores?app.shorelines:null,officialClaim:app.officialClaim});saveBlob(new Blob([file],{type:'image/svg+xml;charset=utf-8'}),PHYSICAL_ONLY_FILENAME);toast(app.officialClaim?'Source-labelled claimed outline exported · not a certified political map':'Historical physical map exported · NO political borders');return;}
@@ -2871,13 +2916,15 @@ function updateStyleButtons(){
     btn.classList.toggle('active',active);
     btn.setAttribute('aria-pressed',String(active));
     if(btn.dataset.style==='terrain'){
-      btn.disabled=!app.features;
-      btn.textContent=app.features?'Imported regions':'Borders: import GeoJSON';
+      btn.disabled=!(app.features||app.soiStates);
+      btn.textContent=app.soiStates?'Survey of India states':app.features?'Imported regions':'Borders: import GeoJSON';
       btn.title=app.features?'User-provided regional polygons — not official or verified':'Official political geometry is not bundled. Import licensed GeoJSON to enable regional borders.';
     }
   });
   const note=document.getElementById('atlas-style-note');
-  if(note)note.textContent=app.features
+  if(note)note.textContent=app.soiStates
+    ? 'Locally installed SoI-format State Boundary Shapefile; source identity and current political-map correspondence require review.'
+    : app.features
     ? 'Regional boundaries shown only from your unverified imported GeoJSON; not an official map.'
     : 'Physical, muted and coastline styles work offline. Regional political borders require a licensed GeoJSON import.';
 }
@@ -2910,7 +2957,7 @@ function applyStylePaint(style){
 }
 function setStyle(style){
   if(!['terrain','physical','ink','outline'].includes(style))return;
-  if(style==='terrain'&&!app.features){
+  if(style==='terrain'&&!app.features&&!app.soiStates){
     toast('Administrative boundaries are not installed. Import a licensed GeoJSON file to enable this style.');
     document.getElementById('import-btn')?.focus();
     return;
@@ -2928,7 +2975,9 @@ function setStyle(style){
     // MapLibre style for a color change caused avoidable reloads and stuttering.
     applyStylePaint(style);
     const label=document.getElementById('map-source-status');
-    if(label)label.textContent=app.features
+    if(label)label.textContent=app.soiStates
+      ? 'SOI-FORMAT STATE BOUNDARIES · LOCAL ONLY · REVIEW NEEDED'
+      : app.features
       ? 'USER-IMPORTED REGIONS · NOT OFFICIAL GEOMETRY'
       : style==='outline'?'HISTORICAL COASTLINES · NOT POLITICAL BORDERS'
       : 'PHYSICAL GEOGRAPHY · NOT POLITICAL BORDERS';
@@ -2994,7 +3043,9 @@ function wire(){
   $('qa-toggle').addEventListener('click',()=>{app.checks=!app.checks;$('qa-toggle').setAttribute('aria-pressed',String(app.checks));updateMapFilters()});
   $('zoom-in').addEventListener('click',()=>zoomMapCentered(1));$('zoom-out').addEventListener('click',()=>zoomMapCentered(-1));
   for(const id of ['reset-map','reset-zoom','clear-focus'])$(id).addEventListener('click',()=>fitAll());
-  $('import-btn').addEventListener('click',()=>$('file-input').click());$('file-input').addEventListener('change',()=>importFile($('file-input').files?.[0]));$('download-qa').addEventListener('click',downloadQA);$('download-svg').addEventListener('click',downloadSVG);
+  $('import-btn').addEventListener('click',()=>$('file-input').click());$('file-input').addEventListener('change',()=>importFile($('file-input').files?.[0]));
+  $('soi-import-btn').addEventListener('click',()=>$('soi-file-input').click());
+  $('soi-file-input').addEventListener('change',()=>loadLocalSoIBoundary($('soi-file-input').files?.[0]));$('download-qa').addEventListener('click',downloadQA);$('download-svg').addEventListener('click',downloadSVG);
   $('my-location').addEventListener('click',()=>{
     if(!navigator.geolocation){toast('This browser does not provide geolocation');return;}
     toast('Requesting location permission from this device; nothing is uploaded.');

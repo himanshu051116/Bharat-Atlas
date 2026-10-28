@@ -1,8 +1,8 @@
 {
   "name": "bharat-atlas-public-preview",
   "private": true,
-  "version": "1.11.1",
-  "description": "Bharat Atlas physical research viewer (no certified Indian political borders)",
+  "version": "1.11.5",
+  "description": "Bharat Atlas public preview with on-device official Survey of India shapefile archive importer",
   "scripts": {
     "build": "node --test tests/release.test.mjs && node scripts/build-site.mjs"
   },
@@ -10,6 +10,10 @@
     "node": "24.x"
   },
   "dependencies": {
-    "maplibre-gl": "5.13.0"
+    "maplibre-gl": "5.13.0",
+    "shpjs": "6.2.0",
+    "fflate": "0.8.3",
+    "node-unrar-js": "2.0.2",
+    "esbuild": "0.25.12"
   }
 }

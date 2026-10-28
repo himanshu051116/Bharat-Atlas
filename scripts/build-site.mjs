@@ -1,5 +1,6 @@
 import {cpSync,existsSync,mkdirSync,readFileSync,readdirSync,rmSync,writeFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';
+import {build as bundle} from 'esbuild';
 import {resolve,join,relative} from 'node:path';
 const input=resolve('public-site'),output=resolve('dist');
 if(!existsSync(join(input,'index.html')))throw Error('Public release directory missing');
@@ -35,9 +36,15 @@ for(const file of ['maplibre-gl.js','maplibre-gl.css'])if(!existsSync(join(libra
 rmSync(output,{recursive:true,force:true});mkdirSync(output,{recursive:true});cpSync(input,output,{recursive:true});
 mkdirSync(join(output,'vendor'),{recursive:true});
 for(const file of ['maplibre-gl.js','maplibre-gl.css'])cpSync(join(library,file),join(output,'vendor',file));
+const wasmFile=resolve('node_modules/node-unrar-js/esm/js/unrar.wasm');
+if(!existsSync(wasmFile))throw Error('Pinned RAR parser WebAssembly binary missing');
+cpSync(wasmFile,join(output,'vendor','unrar.wasm'));
+await bundle({entryPoints:[resolve('scripts/soi-archive-worker.mjs')],outfile:join(output,'vendor','soi-archive-worker.mjs'),bundle:true,platform:'browser',format:'esm',target:'es2022',minify:true,logLevel:'error'});
+if(!existsSync(join(output,'vendor','soi-archive-worker.mjs')))throw Error('Local SoI importer worker was not built');
+
 manifest.assets=names.map(name=>{const bytes=readFileSync(join(output,name));return {path:name,bytes:bytes.length,sha256:sha(bytes)}});
-manifest.version='1.11.1';manifest.externalMapLibreDependency=false;
-manifest.releaseMode='PUBLIC PHYSICAL RESEARCH PREVIEW — NO CERTIFIED POLITICAL BOUNDARIES';
-manifest.politicalBoundarySource='Not bundled: reference the Survey of India 2026 political map';
+manifest.version='1.11.5';manifest.externalMapLibreDependency=false;
+manifest.releaseMode='PUBLIC PHYSICAL RESEARCH PREVIEW — ON-DEVICE SOI SHAPEFILE IMPORTER; NO REDISTRIBUTED SOI DATA';
+manifest.politicalBoundarySource='SoI state and national outlines are locally importable from user-downloaded official archives, not distributed in this release';
 writeFileSync(join(output,'build-manifest.json'),JSON.stringify(manifest,null,2)+'\n');
-console.log('Bharat Atlas v1.11.1 verified '+manifest.assets.length+' public-site assets + self-hosted MapLibre');
+console.log('Bharat Atlas v1.11.5 verified '+manifest.assets.length+' public-site assets + on-device SoI archive reader');

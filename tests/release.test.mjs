@@ -78,3 +78,20 @@ test('physical style variants never require political geometry',()=>{
  assert.match(html,/data-style="outline"[^>]+>Coastlines/);
  assert.match(html,/Survey of India administrative boundary downloads/);
 });
+
+test('official boundary archive reader is strictly local and has source limits',()=>{
+ const app=read('public-site/app.bundle.js');
+ const worker=read('scripts/soi-archive-worker.mjs');
+ const html=read('public-site/index.html');
+ assert.match(html,/id="soi-import-btn"/);
+ assert.match(html,/State_District_Subdistrict_PAN%20INDIA\.rar/);
+ assert.match(html,/Outline_of_India\.zip/);
+ assert.match(app,/new Worker\('\.\/vendor\/soi-archive-worker\.mjs'/);
+ assert.match(app,/mapSource\('soi-state-boundaries'\)\?\.setData/);
+ assert.match(app,/setStyle\('terrain'\)/);
+ assert.match(worker,/250\*1024\*1024/);
+ assert.match(worker,/OFFICIAL_OUTLINE_HASH/);
+ assert.match(worker,/node-unrar-js\/esm\/index\.esm\.js/);
+ assert.doesNotMatch(worker,/postMessage\(\{.*buffer/);
+ assert.equal(existsSync('public-site/data/official-india/india-claim.geojson'),false);
+});
