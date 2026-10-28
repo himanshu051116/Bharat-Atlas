@@ -2871,9 +2871,15 @@ function loadLocalSoIBoundary(file){
   if(file.size>250*1024*1024){status.textContent='The archive exceeds the 250 MB browser limit';return}
   button.disabled=true;
   status.textContent='Opening official archive on this device; no upload to our servers…';
-  const worker=new Worker('./vendor/soi-archive-worker.mjs',{type:'module'});
-  const timeout=setTimeout(()=>{worker.terminate();button.disabled=false;status.textContent='Import timed out; try a desktop browser or extract only the State Boundary files as a ZIP.'},230000);
-  const done=()=>{clearTimeout(timeout);worker.terminate();button.disabled=false;$('soi-file-input').value=''};
+  let worker;
+  const cancelButton=$('soi-cancel-btn');
+  try{worker=new Worker('./vendor/soi-archive-worker.mjs',{type:'module'});}
+  catch(error){button.disabled=false;status.textContent='The archive importer could not start in this browser. Try an up-to-date desktop browser.';console.warn('SoI worker unavailable',error);return;}
+  app.soiImportWorker=worker;
+  if(cancelButton){cancelButton.hidden=false;cancelButton.disabled=false;}
+  const timeout=setTimeout(()=>{worker.terminate();if(app.soiImportWorker===worker)app.soiImportWorker=null;if(cancelButton)cancelButton.hidden=true;button.disabled=false;status.textContent='Import timed out. Check available browser memory and retry with the official archive on a desktop.'},230000);
+  const done=()=>{clearTimeout(timeout);worker.terminate();if(app.soiImportWorker===worker)app.soiImportWorker=null;button.disabled=false;if(cancelButton)cancelButton.hidden=true;$('soi-file-input').value=''};
+  if(cancelButton)cancelButton.onclick=()=>{done();status.textContent='Import cancelled. No archive data was stored or uploaded.';};
   worker.onmessage=e=>{
     const info=e.data||{};
     if(info.type==='progress'){status.textContent=info.text;return}

@@ -263,3 +263,8 @@
 .soi-install-content button{padding:11px;border:0;border-radius:7px;background:#176b55;color:white;font-size:12px;font-weight:750}
 .soi-install-content button:disabled{opacity:.65;cursor:progress}
 #soi-import-status{padding:9px;border-left:3px solid #8aba9e;background:#eaf3ec;overflow-wrap:anywhere}
+
+/* 1.12: cancellation, keyboard focus, and reduced-motion polish */
+.soi-install-content #soi-cancel-btn:not([hidden]){border:1px solid #b75a48;background:#fff6f2;color:#983b2e;min-height:40px}
+.soi-install-content button:focus-visible,.style-picker button:focus-visible{outline:3px solid #efaa53;outline-offset:3px}
+@media (prefers-reduced-motion:reduce){.map-stage,.map-card,.soi-install,.style-btn{scroll-behavior:auto;transition:none!important}}

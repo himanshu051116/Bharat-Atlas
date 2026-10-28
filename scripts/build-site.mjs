@@ -29,13 +29,13 @@ function list(dir,rel=''){
  return items;
 }
 const names=list(input).sort();
-for(const name of names)if(!expected.has(name)&&name!=='physical-preview.svg')throw Error('Unexpected additional release file: '+name);
+for(const name of names)if(!expected.has(name)&&!['physical-preview.svg','atlas-maplibre-loader.mjs'].includes(name))throw Error('Unexpected additional release file: '+name);
 if(!names.includes('physical-preview.svg'))throw Error('Missing always-visible physical map');
 const library=resolve('node_modules/maplibre-gl/dist');
-for(const file of ['maplibre-gl.js','maplibre-gl.css'])if(!existsSync(join(library,file)))throw Error('Pinned MapLibre distribution missing: '+file);
+for(const file of ['maplibre-gl.mjs','maplibre-gl-worker.mjs','maplibre-gl.css'])if(!existsSync(join(library,file)))throw Error('Pinned MapLibre v6 distribution missing: '+file);
 rmSync(output,{recursive:true,force:true});mkdirSync(output,{recursive:true});cpSync(input,output,{recursive:true});
 mkdirSync(join(output,'vendor'),{recursive:true});
-for(const file of ['maplibre-gl.js','maplibre-gl.css'])cpSync(join(library,file),join(output,'vendor',file));
+for(const file of ['maplibre-gl.mjs','maplibre-gl-worker.mjs','maplibre-gl.css'])cpSync(join(library,file),join(output,'vendor',file));
 const wasmFile=resolve('node_modules/node-unrar-js/esm/js/unrar.wasm');
 if(!existsSync(wasmFile))throw Error('Pinned RAR parser WebAssembly binary missing');
 cpSync(wasmFile,join(output,'vendor','unrar.wasm'));
@@ -43,8 +43,9 @@ await bundle({entryPoints:[resolve('scripts/soi-archive-worker.mjs')],outfile:jo
 if(!existsSync(join(output,'vendor','soi-archive-worker.mjs')))throw Error('Local SoI importer worker was not built');
 
 manifest.assets=names.map(name=>{const bytes=readFileSync(join(output,name));return {path:name,bytes:bytes.length,sha256:sha(bytes)}});
-manifest.version='1.11.5';manifest.externalMapLibreDependency=false;
+manifest.version='1.12.0';manifest.externalMapLibreDependency=false;
+manifest.mapEngineVersion='6.16.0';
 manifest.releaseMode='PUBLIC PHYSICAL RESEARCH PREVIEW — ON-DEVICE SOI SHAPEFILE IMPORTER; NO REDISTRIBUTED SOI DATA';
 manifest.politicalBoundarySource='SoI state and national outlines are locally importable from user-downloaded official archives, not distributed in this release';
 writeFileSync(join(output,'build-manifest.json'),JSON.stringify(manifest,null,2)+'\n');
-console.log('Bharat Atlas v1.11.5 verified '+manifest.assets.length+' public-site assets + on-device SoI archive reader');
+console.log('Bharat Atlas v1.12.0 verified '+manifest.assets.length+' public-site assets + on-device SoI archive reader');

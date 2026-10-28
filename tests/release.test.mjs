@@ -12,7 +12,7 @@ test('India boot never fetches unverified politics',()=>{
 });
 test('CDN not required, static fallback available',()=>{
  const html=read('public-site/index.html');
- assert.match(html,/vendor\/maplibre-gl\.js/);
+ assert.match(html,/atlas-maplibre-loader\.mjs/);
  assert.match(html,/vendor\/maplibre-gl\.css/);
  assert.doesNotMatch(html,/cdn\.jsdelivr\.net\/npm\/maplibre-gl/);
  assert.match(read('public-site/styles.css'),/\.physical-poster/);
@@ -71,7 +71,7 @@ test('physical style variants never require political geometry',()=>{
  assert.doesNotMatch(app,/Political styles require a separately loaded boundary dataset/);
  assert.match(app,/function updateStyleButtons\(\)/);
  assert.match(app,/function applyStylePaint\(style\)/);
- assert.match(app,/style==='terrain'&&!app\.features/);
+ assert.match(app,/style==='terrain'&&!app\.features&&!app\.soiStates/);
  assert.match(app,/if\(source\.kind==='import'\)setStyle\('terrain'\)/);
  assert.match(app,/\['land-edge','line-opacity',opacity\]/);
  assert.match(html,/data-style="ink"[^>]+>Muted land/);
@@ -94,4 +94,34 @@ test('official boundary archive reader is strictly local and has source limits',
  assert.match(worker,/node-unrar-js\/esm\/index\.esm\.js/);
  assert.doesNotMatch(worker,/postMessage\(\{.*buffer/);
  assert.equal(existsSync('public-site/data/official-india/india-claim.geojson'),false);
+});
+
+test('MapLibre v6 patched dependency is pinned and loaded as an ES module',()=>{
+ const pkg=JSON.parse(read('package.json'));
+ const loader=read('public-site/atlas-maplibre-loader.mjs');
+ const build=read('scripts/build-site.mjs');
+ assert.equal(pkg.dependencies['maplibre-gl'],'6.16.0');
+ assert.match(loader,/vendor\/maplibre-gl\.mjs/);
+ assert.match(loader,/await import\('\.\/app\.bundle\.js'\)/);
+ assert.match(build,/maplibre-gl-worker\.mjs/);
+});
+test('SHA-256 archive verification precedes Shapefile decompression',()=>{
+ const worker=read('scripts/soi-archive-worker.mjs');
+ assert.ok(worker.indexOf('if(digest!==expectedHash)')>0);
+ assert.ok(worker.indexOf('if(digest!==expectedHash)')<worker.indexOf('await fromRAR(buffer)'));
+ assert.match(worker,/expectedBytes=isRAR\?202524438:7513409/);
+});
+test('Source-labelled state lookup supports navigation and selected boundaries',()=>{
+ const app=read('public-site/app.bundle.js');
+ assert.match(app,/function soiPolygonForName\(name\)/);
+ assert.match(app,/soi-state-selected/);
+ assert.match(app,/app\.map\.fitBounds\(featureBounds\(officialPolygon\)/);
+ assert.match(app,/function normalizeSoIRegionName/);
+});
+test('Importer can be cancelled without retaining worker',()=>{
+ const html=read('public-site/index.html'),app=read('public-site/app.bundle.js');
+ assert.match(html,/id="soi-cancel-btn"/);
+ assert.match(app,/app\.soiImportWorker=worker/);
+ assert.match(app,/worker\.terminate\(\)/);
+ assert.match(app,/app\.soiImportWorker=null/);
 });

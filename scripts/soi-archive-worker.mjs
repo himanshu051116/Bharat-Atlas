@@ -75,14 +75,20 @@ self.onmessage=async event=>{
   const isRAR=/\.rar$/i.test(file.name),isZIP=/\.zip$/i.test(file.name);
   if(!isRAR&&!isZIP)throw Error('Only original .rar or .zip Shapefile archives are supported');
   if(file.size>(isRAR?RAR_LIMIT:ZIP_LIMIT))throw Error('Archive exceeds the browser import limit');
-  report('Reading '+(file.size/1048576).toFixed(1)+' MB from your device; nothing is uploaded.');
+  // Reject wrong/altered files before invoking costly decompression or geometry parsers.
+  // Digest identity is not proof of independent cartographic correctness.
+  const expectedHash=isRAR?OFFICIAL_ABDB_HASH:OFFICIAL_OUTLINE_HASH;
+  const expectedBytes=isRAR?202524438:7513409;
+  if(file.size!==expectedBytes)throw Error('This archive does not match the pinned Survey of India release size. Re-download the original file.');
+  report('Checking full-file SHA-256 before decompression ('+(file.size/1048576).toFixed(1)+' MB, on this device)…');
   const buffer=await file.arrayBuffer();
   const digest=await sha256(buffer);
-  report('Checking coordinates and archive structure…');
+  if(digest!==expectedHash)throw Error('The selected archive differs from the pinned Survey of India release. No untrusted geometry has been parsed.');
+  report('Archive identity matches the pinned reference. Extracting and checking geography locally…');
   const fc=isRAR?await fromRAR(buffer):await fromZIP(buffer);
   const result=validateAndClassify(fc,file);
-  if(result.type==='outline'&&digest!==OFFICIAL_OUTLINE_HASH)throw Error('Outline ZIP differs from the official February 2026 archive; download the original ZIP from Survey of India');
-  if(result.type==='states'&&digest!==OFFICIAL_ABDB_HASH)throw Error('State boundary RAR differs from the official May 2026 ABDB archive; obtain the latest verified archive from Survey of India before importing');
-  postMessage({type:'success',data:fc,details:{...result,hash:digest,sourceName:file.name,verifiedOfficial:result.type==='outline'?digest===OFFICIAL_OUTLINE_HASH:digest===OFFICIAL_ABDB_HASH}});
+  if(isRAR&&result.type!=='states')throw Error('Official ABDB archive did not contain the expected state boundaries');
+  if(isZIP&&result.type!=='outline')throw Error('The selected national outline archive has unexpected contents');
+  postMessage({type:'success',data:fc,details:{...result,hash:digest,sourceName:file.name,verifiedOfficial:true,sourceDate:isRAR?'May 2026':'February 2026'}});
  }catch(error){postMessage({type:'error',message:String(error?.message||error).slice(0,350)});}
 };

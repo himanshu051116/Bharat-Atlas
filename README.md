@@ -26,3 +26,15 @@ The public GitHub/Vercel build **does not redistribute** Survey of India's Shape
 5. The source comprises **40 State Boundary polygons**, including **four specially marked disputed internal areas**. Do not collapse them into the 36-item administrative name list without independent geographic review. The official SoI 2026 [political map](https://surveyofindia.gov.in/pages/political-map-of-india) is the reference for cartographic comparison.
 
 **Source: Survey of India, Government of India.** Local use of officially published source data must comply with its terms; this website does not claim Survey of India endorsement. A successfully loaded, SHA-256-verified source is not the same as independent confirmation that the displayed geometry matches every boundary in the current 2026 political-map edition.
+
+
+## v1.12.0 security and reliability audit (29 October 2026)
+
+- Migrated self-hosted MapLibre from the affected 5.13.0 release to patched **6.16.0**, served as an ES module with its local worker asset. The previous 5.x package was flagged critical by npm audit. The updated version must pass real browser acceptance in the deployment preview before promotion.
+- Validates official ABDB and national-outline archive size and SHA-256 **before** invoking archive extraction or geometry parsing; rejects unmatched files without parsing them. These digests identify specific releases, not a government certificate of the rendered map's accuracy.
+- Adds local archive cancellation and clearer memory requirements. Large administrative RAR imports may consume significant browser memory and are best performed on desktop.
+- Connects locally imported Survey of India state features to catalogue selection and zoom-to-region while preserving the source's disputed-area records instead of conflating them with the 36 administrative catalogue names.
+- Hides political state lines in nonpolitical physical-color styles, keeps a separate national-outline overlay, and highlights selected state boundaries.
+- Uses a pinned npm lockfile after generating and reviewing it in CI, for reproducible deployment builds.
+
+The public website remains a **research preview** without automatically bundled Survey of India geometries. The reference source must be downloaded from Survey of India and imported locally by each visitor; import validation does not constitute independent SoI map-edition certification.
