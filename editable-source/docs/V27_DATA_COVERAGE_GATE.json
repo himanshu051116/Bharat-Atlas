@@ -1,0 +1,71 @@
+{
+  "project": "Bharat Atlas",
+  "development": "v0.27",
+  "auditedData": "Research geography",
+  "physicalMVT": {
+    "tiles": 608,
+    "zoom": [
+      3,
+      8
+    ],
+    "sourceLayers": {
+      "coastlines": {
+        "sourceUrl": "https://www.soest.hawaii.edu/wessel/gshhg/",
+        "licence": "LGPL-3.0-or-later",
+        "sha256": "67d1be520fd75227184bb5b103a1f3819d885743db6fffa1d5a13c3b4a103bc0",
+        "officiallyVerified": false
+      },
+      "lakes": {
+        "sourceUrl": "https://www.soest.hawaii.edu/wessel/gshhg/",
+        "licence": "LGPL-3.0-or-later",
+        "sha256": "1b8b52ccce7ff2ac678f701c887e5c2a898918cc0829ca7fb2cedcb95184f996",
+        "officiallyVerified": false
+      },
+      "rivers": {
+        "sourceUrl": "https://www.soest.hawaii.edu/wessel/gshhg/",
+        "licence": "LGPL-3.0-or-later",
+        "sha256": "27884a5cc5b9039ed21ccf6cc8f5626cb05375d594024df214802336a06aac2a",
+        "officiallyVerified": false
+      },
+      "settlements": {
+        "sourceUrl": "https://github.com/nvkelso/natural-earth-vector/blob/master/geojson/ne_50m_populated_places.geojson",
+        "licence": "Public Domain (Natural Earth)",
+        "sha256": "eab43d22d8ba90027a232ee379324c1ecf2df1446fb42c87b8cc60da566e3b9d",
+        "officiallyVerified": false
+      }
+    }
+  },
+  "settlementCoverage": {
+    "source": "Natural Earth 1:50m public domain",
+    "selectedPoints": 71,
+    "comprehensiveNationalIndex": false,
+    "addresses": false,
+    "currentNamesIndependentlyVerified": false
+  },
+  "transport": {
+    "roads": false,
+    "railways": false,
+    "networkCoverageVerified": false
+  },
+  "politicalGeography": {
+    "official2026Reference": "https://surveyofindia.gov.in/pages/political-map-of-india",
+    "publisher": "Survey of India",
+    "edition": "English 13th edition, 2026",
+    "redistributionPermissionConfirmed": false,
+    "geometryComparedToOfficialReference": false,
+    "northernTerritoryReview": {
+      "Shaksgam": "unresolved",
+      "Gilgit-Baltistan": "unresolved",
+      "Aksai Chin": "unresolved"
+    },
+    "userSuppliedOfficialCandidatePresent": false,
+    "officiallyVerified": false
+  },
+  "realRenderer": {
+    "unmockedEvidencePresent": false,
+    "physicalAndroidTested": false,
+    "physicalIOSTested": false
+  },
+  "coreV1Ready": false,
+  "productionReleaseApproved": false
+}

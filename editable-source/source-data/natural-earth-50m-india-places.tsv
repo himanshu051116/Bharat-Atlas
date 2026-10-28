@@ -1,0 +1,74 @@
+# Derived from Natural Earth 1:50m populated places, GitHub blob f692f6a1311569612a2d3fbb3554e97ec0bfe64c.
+# Columns: NE_ID | NAME | NAME_HI | longitude | latitude | SCALERANK | manually reconciled state/UT
+# Public-domain source. City position approximate. NOT authoritative state boundary evidence.
+1159149175|Agra|आगरा|78.013075|27.172366|4|Uttar Pradesh
+1159151433|Ahmedabad|अहमदाबाद|72.578058|23.031999|2|Gujarat
+1159150027|Akola|अकोला|77.010018|20.709988|4|Maharashtra
+1159149179|Aligarh|अलीगढ़|78.059842|27.894157|4|Uttar Pradesh
+1159149169|Allahabad|प्रयागराज|81.838061|25.456941|4|Uttar Pradesh
+1730025037|Amaravati|अमरावती|80.524320|16.533658|4|Andhra Pradesh
+1159150975|Amritsar|अमृतसर|74.868047|31.641938|3|Punjab
+1159150981|Asansol|आसनसोल|86.981387|23.685279|3|West Bengal
+1159149161|Aurangabad|औरंगाबाद|75.328948|19.861686|4|Maharashtra
+1159151543|Bengaluru|बंगलौर|77.558064|12.971941|1|Karnataka
+1159150155|Bhagalpur|भागलपुर|86.980003|25.229996|4|Bihar
+1159150983|Bhilai|भिलाई|81.372213|21.211262|3|Chhattisgarh
+1159150985|Bhopal|भोपाल|77.408047|23.251934|3|Madhya Pradesh
+1159150465|Bhubaneswar|भुवनेश्वर|85.825414|20.272374|3|Odisha
+1159149153|Chandigarh|चण्डीगढ़|76.778060|30.721943|4|Chandigarh
+1159151431|Chennai|चेन्नई|80.278053|13.091934|2|Tamil Nadu
+1159150989|Coimbatore|कोयंबतूर|76.948075|11.001906|3|Tamil Nadu
+1159150011|Cuttack|कटक|85.889941|20.470002|4|Odisha
+1159151405|Delhi|दिल्ली|77.228058|28.671939|2|Delhi
+1159149183|Dhanbad|धनबाद|86.418040|23.802339|4|Jharkhand
+1159149165|Dispur|दिसपुर|91.766636|26.144023|4|Assam
+1159149999|Faridabad|फरीदाबाद|77.314721|28.435279|4|Haryana
+1159149173|Ghaziabad|गाज़ियाबाद|77.406445|28.662327|4|Uttar Pradesh
+1159150029|Guwahati|गुवाहाटी|91.768049|26.161963|4|Assam
+1159149185|Gwalior|ग्वालियर|78.169197|26.200035|4|Madhya Pradesh
+1159150013|Hubballi|हुबली|75.123070|15.361924|4|Karnataka
+1159151407|Hyderabad|हैदराबाद|78.478008|17.401929|2|Telangana
+1159150161|Indore|इन्दौर|75.863077|22.717005|4|Madhya Pradesh
+1159150159|Jabalpur|जबलपुर|79.953112|23.177003|4|Madhya Pradesh
+1159151423|Jaipur|जयपुर|75.808042|26.923079|2|Rajasthan
+1159149155|Jammu|जम्मू|74.844793|32.713733|4|Jammu and Kashmir
+1159150467|Jamshedpur|जमशेदपुर|86.195573|22.789481|3|Jharkhand
+1159150141|Jodhpur|जोधपुर|73.014827|26.293712|4|Rajasthan
+1159149167|Jullundur|जलंधर|75.567074|31.336866|4|Punjab
+1159150019|Kalaburagi|गुलबर्गा|76.820003|17.349960|4|Karnataka
+1159151425|Kanpur|कानपुर|80.318050|26.461945|2|Uttar Pradesh
+1159150009|Kochi|कोच्चि|76.221970|10.016953|4|Kerala
+1159150021|Kolhapur|कोल्हापुर|74.220007|16.700000|4|Maharashtra
+1159151617|Kolkata|कोलकाता|88.369126|22.569579|0|West Bengal
+1159150139|Kota|कोटा|75.833053|25.181945|4|Rajasthan
+1159150463|Kozhikode|कोष़िक्कोड|75.768044|11.252382|3|Kerala
+1730025033|Leh|लेह|77.572291|34.161559|4|Ladakh
+1159150147|Lucknow|लखनऊ|80.913053|26.856985|4|Uttar Pradesh
+1159150137|Ludhiana|लुधियाना|75.870312|30.929708|4|Punjab
+1159150987|Madurai|मदुरई|78.118081|9.921972|3|Tamil Nadu
+1159150015|Mangaluru|मैंगलूर|74.849994|12.900025|4|Karnataka
+1159149181|Meerut|मेरठ|77.698055|29.002358|4|Uttar Pradesh
+1159149171|Moradabad|मुरादाबाद|78.754838|28.843737|4|Uttar Pradesh
+1159151611|Mumbai|मुम्बई|72.875839|19.068408|0|Maharashtra
+1159150017|Mysuru|मैसूर|76.658067|12.311930|4|Karnataka
+1159151413|Nagpur|नागपुर|79.088048|21.171906|2|Maharashtra
+1159150025|Nanded|नांदेड़|77.308337|19.197259|4|Maharashtra
+1159149163|Nasik|नासिक|73.778036|20.002365|4|Maharashtra
+1159151541|New Delhi|नई दिल्ली|77.199980|28.600023|1|Delhi
+1159151429|Patna|पटना|85.128093|25.626905|2|Bihar
+1159150163|Puducherry|पॉन्डिचेरी|79.830000|11.934994|4|Puducherry
+1159151411|Pune|पुणे|73.851892|18.516394|2|Maharashtra
+1159150157|Raipur|रायपुर|81.633061|21.236940|4|Chhattisgarh
+1159149189|Rajkot|राजकोट|70.798063|22.311965|4|Gujarat
+1159150153|Ranchi|राँची|85.328080|23.371952|4|Jharkhand
+1159150151|Saharanpur|सहारनपुर|77.550036|29.970017|4|Uttar Pradesh
+1159150165|Salem|सेलम|78.178129|11.671943|4|Tamil Nadu
+1159149157|Sholapur|सोलापुर|75.898062|17.672352|4|Maharashtra
+1159150001|Srinagar|श्रीनगर|74.828309|34.069474|4|Jammu and Kashmir
+1159151435|Surat|सूरत|72.838094|21.201930|2|Gujarat
+1159150007|Thiruvananthapuram|तिरुवनन्तपुरम|76.925191|8.515521|4|Kerala
+1159150169|Tiruchirappalli|तिरुचिरापल्ली|78.687512|10.800541|4|Tamil Nadu
+1159149187|Vadodara|वड़ोदरा|73.178073|22.311965|4|Gujarat
+1159150979|Varanasi|वाराणसी|82.998094|25.331936|3|Uttar Pradesh
+1159150003|Vijayawada|विजयवाड़ा|80.628057|16.521905|4|Andhra Pradesh
+1159150915|Vishakhapatnam|विशाखापत्तनम|83.219848|17.682903|3|Andhra Pradesh

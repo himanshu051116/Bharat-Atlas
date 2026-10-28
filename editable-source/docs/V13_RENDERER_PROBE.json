@@ -1,0 +1,9 @@
+{
+  "probe": "Bharat Atlas v0.13 local-only",
+  "vendorMapLibreAvailable": false,
+  "actualMapLibreMapRendered": false,
+  "browserExecutable": true,
+  "webgl1Available": false,
+  "webgl2Available": false,
+  "interpretation": "Only browser capability is probed. Actual MapLibre requires licensed local bundle, valid geographic data and real WebGL rendering."
+}

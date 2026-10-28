@@ -1,0 +1,47 @@
+{
+  "format": "BharatAtlasEndToEndProgramAudit1",
+  "generatedAtUtc": "2026-10-24T18:42:01.250465+00:00",
+  "project": "Bharat Atlas",
+  "sourceVersion": "0.36",
+  "programStatus": "RESEARCH DEVELOPMENT ONLY",
+  "productionApproved": false,
+  "automatedChecksPassed": true,
+  "productionGuardRejects": true,
+  "bundledTileCount": 608,
+  "tileLayerKinds": [
+    "coastlines",
+    "lakes",
+    "rivers",
+    "settlements"
+  ],
+  "officialPoliticalGeometryVerified": false,
+  "nationalTransportComplete": false,
+  "realGpuAndPhysicalDevicesValidated": false,
+  "steps": [
+    {
+      "command": "/opt/pyvenv/bin/python scripts/build.py",
+      "passed": true,
+      "exitCode": 0,
+      "tail": "Built local research viewer: /mnt/data/bharat-atlas-program/dist with 648 assets\n"
+    },
+    {
+      "command": "/opt/pyvenv/bin/python scripts/verify_preview.py",
+      "passed": true,
+      "exitCode": 0,
+      "tail": "{\n  \"version\": \"0.36\",\n  \"modules\": 25,\n  \"assetsVerified\": 648,\n  \"officialGeometryVerified\": false,\n  \"previewOnly\": true\n}\n"
+    }
+  ],
+  "releaseGuard": {
+    "command": "/opt/pyvenv/bin/python scripts/release_guard.py --target production",
+    "passed": false,
+    "exitCode": 1,
+    "tail": "BLOCKED: v0.36 lacks independently validated 2026 Survey of India geometry and reuse permissions\nBLOCKED: genuine MapLibre/WebGL rendering and national road/settlement data and genuine river rendering not verified\nBLOCKED: no cross-browser device and 1,000-concurrent-user performance evidence\nBLOCKED: learning, district observatory, historical-border comparison and publishing studio lack independently reviewed data and release tests\n"
+  },
+  "noDeploymentOrRepoMutation": true,
+  "remainingHardGates": [
+    "Legal rights and Survey of India territory audit",
+    "Nationwide roads/rail/settlement datasets",
+    "Unmocked MapLibre/WebGL2 on actual desktop and phones",
+    "Load, accessibility, security, monitoring and rollback acceptance"
+  ]
+}

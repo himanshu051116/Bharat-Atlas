@@ -1,0 +1,15 @@
+{
+  "version": "0.13",
+  "deployment": false,
+  "javascriptTestsPassed": 44,
+  "pythonTestsPassed": 22,
+  "mockedDesktopMobileSmokePassed": true,
+  "mockedWebGLFailureRecoveryPassed": true,
+  "localWebGL1Available": false,
+  "localWebGL2Available": false,
+  "realMapLibreRendered": false,
+  "officialGeometryVerified": false,
+  "bundledNationalBasemap": false,
+  "actualTrafficLoadTestRun": false,
+  "productionGuardBlocked": true
+}

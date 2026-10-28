@@ -1,0 +1,40 @@
+{
+  "checkedUTC": "2026-10-24T10:48:36.260067+00:00",
+  "actualWebGLContextCheck": true,
+  "status": "webgl2_unavailable",
+  "platform": "chromium headless",
+  "devices": [
+    {
+      "browserMode": "default",
+      "device": "desktop",
+      "webgl2": false,
+      "webgl": false,
+      "renderer": null,
+      "version": null
+    },
+    {
+      "browserMode": "default",
+      "device": "mobile emulation",
+      "webgl2": false,
+      "webgl": false,
+      "renderer": null,
+      "version": null
+    },
+    {
+      "browserMode": "software-GL-flags",
+      "device": "desktop",
+      "webgl2": false,
+      "webgl": false,
+      "renderer": null,
+      "version": null
+    },
+    {
+      "browserMode": "software-GL-flags",
+      "device": "mobile emulation",
+      "webgl2": false,
+      "webgl": false,
+      "renderer": null,
+      "version": null
+    }
+  ]
+}

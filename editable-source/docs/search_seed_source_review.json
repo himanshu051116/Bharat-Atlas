@@ -1,0 +1,9 @@
+{
+  "sourceSha256": "eab43d22d8ba90027a232ee379324c1ecf2df1446fb42c87b8cc60da566e3b9d",
+  "sourceUrl": "https://github.com/nvkelso/natural-earth-vector/blob/master/geojson/ne_50m_populated_places.geojson",
+  "licence": "Public Domain (Natural Earth)",
+  "attribution": "Natural Earth 1:50m populated places (public domain); editorial region names, not survey-certified",
+  "officiallyVerified": false,
+  "redistributionReview": "approved_for_research_preview",
+  "coverageClaim": "selected_71_natural_earth_cities_only"
+}

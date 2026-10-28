@@ -1,0 +1,10 @@
+{
+  "officiallyVerified": false,
+  "redistributionReview": "pending",
+  "sourceSha256": "REPLACE_WITH_SHA256_OF_UNMODIFIED_GEOJSON_FILE",
+  "sourceUrl": "https://replace-with-original-source.example/",
+  "licence": "REPLACE_WITH_EXACT_LICENCE_OR_GRANT",
+  "attribution": "REPLACE_WITH_REQUIRED_COPYRIGHT_AND_CREDIT",
+  "snapshotDate": "2026-10-24",
+  "coverageClaim": "regional_extract"
+}

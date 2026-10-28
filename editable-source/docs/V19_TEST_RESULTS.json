@@ -1,0 +1,27 @@
+{
+  "project": "Bharat Atlas",
+  "version": "0.19",
+  "date": "2026-10-23",
+  "javascriptTests": {
+    "passed": 66,
+    "failed": 0
+  },
+  "pythonTests": {
+    "passed": 56,
+    "failed": 0
+  },
+  "browserSmokeTests": "passed; synthetic geometry and mocked MapLibre; real SVG fallback exercised",
+  "geoImportAdversarialFixtures": "overlapping regions, 512+ vertex self-crossing, multipolygon overlap, adjacent regions",
+  "previewIntegrityVerification": {
+    "modules": 10,
+    "assets": 10,
+    "result": "passed"
+  },
+  "mvtGISFixtureAudit": "passed on synthetic data only",
+  "productionReleaseGate": "blocked",
+  "realWebGLVerified": false,
+  "officialSurveyOfIndiaDataIntegrated": false,
+  "previewZipSha256": "95fff7d5d50960a494cff660d619b3528772c5072fbbfe3dfb391c50b623ccef",
+  "deploymentModified": false,
+  "nextStep": "Authorized official-reference geometry and genuine renderer proof"
+}

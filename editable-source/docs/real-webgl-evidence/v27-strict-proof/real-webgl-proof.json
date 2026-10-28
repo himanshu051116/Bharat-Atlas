@@ -1,0 +1,15 @@
+{
+  "version": "0.27",
+  "timestampUTC": "2026-10-23T18:23:25.667749+00:00",
+  "testType": "genuine MapLibre/WebGL2; no mocks",
+  "status": "blocked_missing_local_renderer",
+  "reasons": [
+    "Missing local asset: maplibre-gl.js",
+    "Missing local asset: maplibre-gl.css",
+    "Missing local asset: maplibre-provenance.json"
+  ],
+  "contexts": [],
+  "externalBoundaryVerified": false,
+  "vectorData": "GSHHG/WDBII 2.3.6, generalized historical physical geography",
+  "productionApproved": false
+}

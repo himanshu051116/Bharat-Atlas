@@ -1,0 +1,22 @@
+{
+  "project": "Bharat Atlas",
+  "version": "0.28",
+  "audited": "2026-10-24",
+  "tests": {
+    "javascriptPassed": 103,
+    "pythonPassed": 92,
+    "browserMockSmokePassed": true,
+    "staticAssetsVerified": 645
+  },
+  "realWebGLRenderer": "blocked_missing_local_renderer",
+  "authenticatedMapLibreAssetsBundled": false,
+  "officialPoliticalGeometryVerified": false,
+  "licensedNationwideTransportBundled": false,
+  "productionReleaseApproved": false,
+  "deployed": false,
+  "newWork": [
+    "npm package SHA512 check and staged vendor rollback",
+    "unmocked renderer and pan/zoom proof strengthened",
+    "reviewed GeoJSON transport/settlement preparation and tests"
+  ]
+}

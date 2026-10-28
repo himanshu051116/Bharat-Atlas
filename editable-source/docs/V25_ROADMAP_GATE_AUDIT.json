@@ -1,0 +1,85 @@
+{
+  "product": "Bharat Atlas",
+  "iteration": "0.25",
+  "compiledPreviewVerified": true,
+  "buildManifestSha256": "a045aaf5ba474542f864f3ebc8835c949220ca80603ed932d5b60de58a90c518",
+  "coreModules": 14,
+  "staticAssets": 642,
+  "authoritativeGeographyApproved": false,
+  "productionReleasePermitted": false,
+  "lastPhaseReachedInResearchCode": true,
+  "fullV2ProductComplete": false,
+  "phaseEvidence": {
+    "Core v1.0": {
+      "implemented": [
+        "modular static map app",
+        "basic regional selection",
+        "research SVG export",
+        "provisional-data warning",
+        "physical SVG continuity",
+        "selected city search"
+      ],
+      "blocking": [
+        "authoritative 2026 boundary and redistribution review",
+        "northern territorial comparison",
+        "modern India road and settlement basemap",
+        "genuine GPU/MapLibre validation",
+        "iOS/Android accessibility and performance",
+        "1,000-session test",
+        "verified nationwide address search",
+        "full production print export"
+      ],
+      "releaseReady": false
+    },
+    "Learning & Studio v1.5": {
+      "implemented": [
+        "State/UT classification quiz",
+        "physical map location worksheet and answer CSV",
+        "custom-title research physical SVG",
+        "browser print/PDF workflow"
+      ],
+      "blocking": [
+        "independently reviewed lessons/answer keys",
+        "educator trials",
+        "political map worksheet with authorised borders",
+        "dedicated print-layout rendering",
+        "bilingual curriculum-reviewed content"
+      ],
+      "releaseReady": false
+    },
+    "Geographic Intelligence v2.0": {
+      "implemented": [
+        "source-selected place-count sample chart",
+        "region-filtered point list",
+        "great-circle city distance",
+        "CSV indicator import with source and boundary edition",
+        "strict temporal comparison guard",
+        "three-scene geographic source story"
+      ],
+      "blocking": [
+        "verified district-level datasets",
+        "authoritative geographic crosswalks for changing districts",
+        "time-versioned political boundary layers",
+        "actual choropleth statistics",
+        "reviewed history/story content",
+        "audited import coverage"
+      ],
+      "releaseReady": false
+    },
+    "Maintenance / Phase 11": {
+      "implemented": [
+        "local file hash manifests",
+        "test suite and guard",
+        "source metadata retained",
+        "manual source and release audit"
+      ],
+      "blocking": [
+        "production monitoring and error triage",
+        "licence/source update owner",
+        "deployment incident procedure",
+        "scheduled source freshness checks in connected infrastructure"
+      ],
+      "releaseReady": false
+    }
+  }
+}

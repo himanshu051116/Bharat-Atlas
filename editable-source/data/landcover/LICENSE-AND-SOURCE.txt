@@ -1,0 +1,1 @@
+GSHHG 2.3.6 via Basemap Data 2.0.0. LGPL-3.0-or-later. Derived by unioning existing Basemap GSHHG land polygons, subtracting GSHHG lake polygons and clipping to 68–99 E, 6–38 N. Includes neighbouring countries. Not political, legal, current shoreline or navigation data. Source: https://www.soest.hawaii.edu/wessel/gshhg/

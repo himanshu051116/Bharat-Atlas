@@ -1,0 +1,16 @@
+{
+  "version": "0.18",
+  "date": "2026-10-23",
+  "deployment": "not performed",
+  "javascriptTests": 56,
+  "javascriptPassed": 56,
+  "pythonTests": 50,
+  "pythonPassed": 50,
+  "browserSmoke": "passed with mocked MapLibre and synthetic geography",
+  "realSVGClickAndKeyboard": "passed",
+  "previewContract": "passed, 10 modules and 10 assets",
+  "officialBoundaryVerification": "not performed",
+  "realWebGL": "not verified",
+  "loadTest1000": "not performed",
+  "productionGuard": "blocked"
+}

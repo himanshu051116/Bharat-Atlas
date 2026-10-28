@@ -1,0 +1,16 @@
+{
+  "project": "Bharat Atlas",
+  "version": "0.15",
+  "mode": "LOCAL RESEARCH ONLY",
+  "unitTestsJavaScript": {"passed": 56, "failed": 0},
+  "unitTestsPython": {"passed": 36, "failed": 0},
+  "browserTests": {"result": "passed", "desktopAndMobile": true, "renderer": "mocked MapLibre", "geography": "synthetic", "gazetteer": "synthetic"},
+  "build": "passed",
+  "productionReleaseGuard": "blocked by design",
+  "officialBoundaryGeometryIntegrated": false,
+  "realNationwideGazetteerIntegrated": false,
+  "realWebGLVerified": false,
+  "loadTest1000UsersPassed": false,
+  "deploymentPerformed": false,
+  "gitRepositoryModified": false
+}

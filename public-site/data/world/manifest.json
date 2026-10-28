@@ -1,0 +1,13 @@
+{
+  "dataset": "Natural Earth low-resolution legacy 1:110m Admin-0 countries / geopandas test fixture copy",
+  "sourceUrl": "https://www.naturalearthdata.com/downloads/110m-cultural-vectors/110m-admin-0-countries/",
+  "termsUrl": "https://www.naturalearthdata.com/about/terms-of-use/",
+  "licence": "Public domain (Natural Earth)",
+  "precision": "generalized small-scale",
+  "officiallyVerified": false,
+  "suitableForLegalBoundaryDecisions": false,
+  "inputSha256": "70ebe75d0715d4da98ea1d0bd433be3e31d0584ad21fa53800fa9b44e77cb3c8",
+  "outputSha256": "a74ef76632a62a5e874a09d17d9b060d7cf803a0b0a2ca81ca8c2d12d2dabdeb",
+  "count": 177,
+  "omissions": "Many small islands, dependent territories and disputed representations are absent or generalized; differences from India official territorial claims are expected."
+}

@@ -1,0 +1,29 @@
+{
+  "reviewed": true,
+  "publisher": "Natural Earth",
+  "licence": "Public domain",
+  "sources": {
+    "cities": {
+      "sha256": "bb0e530db71fda3b6bf30528281a34548f28c8bd5d9cdb396a707de57ae9f1b2",
+      "components": {
+        ".geojson": "bb0e530db71fda3b6bf30528281a34548f28c8bd5d9cdb396a707de57ae9f1b2"
+      },
+      "version": "Natural Earth 50m GitHub curated extract (226 included; NOT original full dataset)",
+      "url": "https://github.com/nvkelso/natural-earth-vector/blob/master/geojson/ne_50m_populated_places_simple.geojson",
+      "licence": "Public domain",
+      "sourceGitBlobSHA1": "3fad8f0038ba95c7758800f3f3c148418e7c76d1",
+      "publisherFeatureCount": 1251
+    },
+    "peaks": {
+      "sha256": "c52febe127596a1efdd53d5d3132e40ce1fb99969d740962d55f61ce14bbcd05",
+      "components": {
+        ".geojson": "c52febe127596a1efdd53d5d3132e40ce1fb99969d740962d55f61ce14bbcd05"
+      },
+      "version": "Natural Earth 50m GitHub curated extract (81 included; NOT original full dataset)",
+      "url": "https://github.com/nvkelso/natural-earth-vector/blob/master/geojson/ne_50m_geography_regions_elevation_points.geojson",
+      "licence": "Public domain",
+      "sourceGitBlobSHA1": "70050da0bc83a0736d6c6ca92a6a3a09b710e316",
+      "publisherFeatureCount": 86
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "project": "Bharat Atlas",
+  "branch": "local-v0.30-integrated-development",
+  "developmentDate": "2026-10-24",
+  "version": "0.30",
+  "status": "integrated-research-development-candidate",
+  "productionApproved": false,
+  "deployed": false,
+  "githubChanged": false,
+  "codeBuildValidated": true,
+  "staticAssetManifestValidated": true,
+  "fullAcceptanceSuiteDeferredUntilUserRequestedTestingPhase": true,
+  "newFeaturesImplemented": [
+    "geodesic-approximate-distance-and-area-research-measurement",
+    "interactive-map-and-svg-fallback-measurement-drawing",
+    "on-device-geolocation-opt-in",
+    "browser-local-bookmarks-import-safe-export-and-clear",
+    "shareable-region-and-coordinate-view-urls",
+    "bounded-source-labelled-browser-geojson-overlays",
+    "source-backed-offline-local-road-graph-shortest-path-research",
+    "optional-separated-modern-transport-vector-data-pack",
+    "transport-pack-builder-with-provenance-validation",
+    "research-data-coverage-panel",
+    "same-origin-offline-shell-asset-cache",
+    "double-click-windows-preview-launcher"
+  ],
+  "criticalExternalBlockers": [
+    "authenticated-indian-political-geometry-and-redistribution-rights",
+    "shaksgam-aksai-chin-gilgit-baltistan-claim-versus-control-reconciliation",
+    "nationwide-up-to-date-roads-railways-named-waterways-and-address-datasets",
+    "navigation-grade-road-routing-graph-and-access-restrictions",
+    "authentic-MapLibre-runtime-and-real-WebGL2-device-evidence",
+    "physical-android-ios-and-real-user-load-validation",
+    "full-accessibility-performance-and-production-signoff"
+  ]
+}

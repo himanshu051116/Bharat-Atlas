@@ -1,0 +1,12 @@
+{
+  "project": "Bharat Atlas", "version": "0.29", "checkedAt": "2026-10-24",
+  "releaseMode": "LOCAL_RESEARCH_ONLY", "productionApproved": false,
+  "tests": {"javascriptPassed": 106, "javascriptFailed": 0, "pythonPassed": 92, "pythonFailed": 0,
+    "mockDesktopAndMobileBrowser": "passed", "injectedWebGLContextLossAndRetry": "passed_with_mock",
+    "previewAssetsSha256Verified": 645, "realMapLibreWebGL2": "blocked_missing_local_renderer",
+    "physicalDeviceTests": "not_run", "productionGuard": "expected_reject"},
+  "authoritativePoliticalGeometryVerified": false,
+  "shaksgamGeometricallyReconciled": false,
+  "actualNationalRoadAndRailDatasetsIncluded": false,
+  "deployed": false
+}

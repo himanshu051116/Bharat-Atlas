@@ -1,0 +1,24 @@
+{
+  "version": "0.10",
+  "mode": "LOCAL_RESEARCH_ONLY",
+  "deployed": false,
+  "javascriptUnitTests": 24,
+  "pythonUnitTests": 15,
+  "browserTests": "mocked engine only; pass",
+  "webGLVerified": false,
+  "geographyOfficiallyVerified": false,
+  "concurrentLoadVerified": false,
+  "features": [
+    "MVT static XYZ tile generator",
+    "provenance & SHA256 verification",
+    "optional MapLibre roads/rivers/settlements",
+    "nonblocking map loading",
+    "safe fallback and imports"
+  ],
+  "knownBlockers": [
+    "Survey of India authoritative vector/licence not integrated",
+    "MapLibre runtime not bundled or actually tested",
+    "No real road/river/settlement tile data distributed",
+    "Shaksgam boundary discrepancy unresolved"
+  ]
+}

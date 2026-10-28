@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/><meta name="theme-color" content="#0d2924"/>
+<meta name="robots" content="noindex,nofollow"/>
+<meta name="description" content="Bharat Atlas World Explorer: examine generalized world country boundaries and continents, in English and Hindi, with source limitations shown."/>
+<title>World Explorer — Bharat Atlas</title>
+<link rel="stylesheet" href="./world.css"/>
+</head>
+<body>
+<a class="skip" href="#world-map">Skip to the world map</a>
+<div class="world-shell">
+<header class="topbar">
+ <a class="brand" href="./index.html" aria-label="Bharat Atlas India home"><span class="brand-icon">✳</span><span>bharat<span class="brand-thin">atlas</span><small>WORLD EXPLORER</small></span></a>
+ <nav aria-label="Atlas views"><a class="nav-link" href="./index.html">India atlas</a><span class="nav-current" aria-current="page">World atlas</span></nav>
+ <div class="header-note">SOURCE-LABELLED GEOGRAPHY <span class="status-dot"></span></div>
+</header>
+<div class="legal-strip" role="note"><span>ⓘ</span><p><strong>Generalized world geography.</strong> Natural Earth legacy 1:110m overview, not current certified political borders. Territorial claims and small territories may differ or be absent.</p><a href="https://www.naturalearthdata.com/downloads/110m-cultural-vectors/110m-admin-0-countries/" target="_blank" rel="noopener noreferrer">About this source ↗</a></div>
+<div class="layout">
+<aside class="sidebar" aria-label="World explorer controls">
+ <div class="lead"><span class="overline">EXPLORE THE PLANET</span><h1>A whole<br/><em>world to see.</em></h1><p>Explore countries, reference capitals and geographic coordinates. Search in English or Hindi.</p></div>
+ <label class="search-label" for="country-search">FIND COUNTRY, CAPITAL OR INSTALLED GEOGRAPHY</label>
+ <div class="search-box"><span aria-hidden="true">⌕</span><input id="country-search" type="search" placeholder="India, भारत, Tokyo, Ottawa…" autocomplete="off"/><kbd>/</kbd></div>
+ <div id="world-source-results-desktop" class="world-source-suggestions" role="listbox" aria-label="Country, capital and geographic matches" aria-live="polite"></div>
+ <div class="explore-note" role="note">Start with a country name, or tap a continent. Select a shaded country or a capital marker to see its geographic summary. Capital references come from a legacy dataset, not a current official gazetteer.</div>
+ <label class="search-label" for="continent-select">EXPLORE BY CONTINENT</label>
+ <select id="continent-select"><option value="All">All continents</option><option>Africa</option><option>Asia</option><option>Europe</option><option>North America</option><option>South America</option><option>Oceania</option><option>Antarctica</option></select>
+ <details class="coordinate-explore"><summary>Jump to latitude / longitude</summary>
+ <form id="world-coordinates-form" class="coordinate-search" aria-label="Find latitude and longitude">
+ <strong>GO TO COORDINATES</strong><div class="coordinate-fields"><label>Latitude<input id="go-lat" type="number" min="-90" max="90" step="any" placeholder="28.61" required/></label><label>Longitude<input id="go-lon" type="number" min="-180" max="180" step="any" placeholder="77.21" required/></label></div>
+ <button type="submit">Show this location on map</button><p id="world-point-status" role="status" aria-live="polite">Enter a coordinate pair in degrees (WGS84).</p>
+ </form></details>
+ <div class="sidebar-heading"><strong>COUNTRIES &amp; MAP UNITS</strong><span id="country-count">—</span></div>
+ <div class="country-list" id="country-list" role="listbox" aria-label="Choose a country"><p class="loading">Loading world map…</p></div>
+ <div class="sidebar-foot"><span class="overline">OUR HOME</span><a href="./index.html" class="home-link"><span>Explore India in detail<small>28 states · 8 union territories</small></span><span aria-hidden="true">↗</span></a><p>India's dedicated atlas retains its own state/UT directory and geographic research layers.</p></div>
+</aside>
+<main class="main" id="world-map">
+ <div class="page-title"><div><span class="overline">WORLD / INTERACTIVE MAP</span><h2>World map<span>.</span></h2></div><div class="world-actions"><button type="button" id="world-home">View whole world</button><a href="./index.html" class="india-shortcut">Explore India ↗</a></div></div>
+ <div class="mobile-world-search"><label for="mobile-country-search">Search country, capital or source-listed geography</label><input id="mobile-country-search" type="search" placeholder="भारत, Japan, New Delhi…" autocomplete="off"/><small>Search a country, reference capital, or installed place; use ↑/↓ and Enter to choose</small><div id="world-source-results-mobile" class="world-source-suggestions" role="listbox" aria-label="Country, capital and geographic matches" aria-live="polite"></div></div>
+ <section class="map-card" aria-label="Interactive country world map">
+  <div class="world-guide" aria-label="How to read this map"><span><i class="guide-swatch land"></i> Generalized countries</span><span><i class="guide-swatch claim"></i> India's sourced claim outline</span><span><i class="guide-swatch point"></i> Coordinate pin</span><span><i class="guide-swatch capital"></i> Reference capitals</span><span>Scroll / pinch to zoom · Drag to pan</span></div>
+  <div class="map-toolbar"><div class="view-tabs" role="group" aria-label="Map scope"><button id="view-world" class="active" aria-pressed="true">World</button><button id="view-asia" aria-pressed="false">Asia</button><button id="view-india" aria-pressed="false">India region</button></div><details class="toolbar-more"><summary>Layers &amp; tools</summary><div class="toolbar-end"><button id="grid-toggle" aria-pressed="true">Grid</button><button id="labels-toggle" aria-pressed="true">Names</button><button id="capitals-toggle" aria-pressed="false" disabled title="Reference capital data loading">Capitals</button><button id="india-claims-toggle" aria-pressed="false" disabled title="Requires an imported, source-backed Survey of India outline">India claim outline</button><button id="distance-toggle" aria-pressed="false">Compare distance</button></div></details></div>
+  <div class="map-wrap" id="map-wrap">
+   <svg id="world-svg" viewBox="0 0 1440 720" role="img" aria-label="Interactive generalized map of world countries" tabindex="0" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="sea" x1="0" x2="0.5" y1="0" y2="1"><stop offset="0" stop-color="#dcece9"/><stop offset="1" stop-color="#eff6f3"/></linearGradient></defs><rect width="1440" height="720" fill="url(#sea)"/><g id="latlon-grid"></g><g id="country-layer"></g><g id="world-physical-layer" aria-label="Historical world waterways"></g><g id="world-fine-boundary-layer" aria-label="Optional more detailed country outlines"></g><g id="world-admin1-layer" aria-label="Source-labelled non-Indian state and province boundaries"></g><g id="official-india-layer" aria-label="Survey of India sourced claimed national outline, if installed"></g><g id="world-city-layer" aria-label="Source-backed city and mountain markers"></g><g id="capital-markers" aria-label="Reference capital-city markers"></g><g id="country-labels"></g><g id="selection-overlay"></g><g id="user-point"></g></svg>
+   <div class="map-scale-info"><strong>WORLD ATLAS</strong><span>Natural Earth · generalized 1:110m</span></div>
+   <div class="map-controls" role="group" aria-label="Map navigation"><button id="zoom-plus" aria-label="Zoom in">+</button><button id="zoom-minus" aria-label="Zoom out">−</button><button id="zoom-reset" aria-label="Reset map">⌂</button></div>
+   <div class="world-distance-scale" id="world-distance-scale" aria-label="Approximate distance scale at map centre" role="status">Scale loading…</div>
+   <div class="map-coordinates" id="coordinate-status" role="status">Drag to move · Scroll or pinch to zoom</div>
+   <div class="floating-tip" id="floating-tip" hidden></div>
+  </div>
+  <div class="map-bottom"><span id="map-mode-label">OVERVIEW · GENERALIZED COUNTRY POLYGONS</span><span id="map-zoom-label">1.0× ZOOM</span></div>
+ </section>
+ <section id="world-feature-inspector" class="world-feature-inspector" aria-label="Selected geographic feature details" hidden></section>
+ <div class="india-claim-banner" id="india-claim-status" role="status">Indian claim outline not installed. Generalized world geography is not the Government of India political map. <a href="https://surveyofindia.gov.in/pages/outline-maps-of-india" target="_blank" rel="noopener noreferrer">Official outline source</a></div>
+ <details class="world-detail-controls" id="world-detail-controls"><summary>More map detail · named rivers, lakes, cities, states &amp; terrain</summary>
+ <div class="world-detail-toggles" role="group" aria-label="Optional geography layers">
+ <button type="button" id="world-waterways-toggle" aria-pressed="true" disabled>Historic waterways</button>
+ <button type="button" id="world-coastline-toggle" aria-pressed="true" disabled>Detailed shorelines</button>
+ <button type="button" id="world-inland-water-toggle" aria-pressed="true" disabled>Reference inland water</button>
+ <button type="button" id="world-cities-toggle" aria-pressed="false" disabled>Source-listed cities</button>
+ <button type="button" id="world-admin1-toggle" aria-pressed="false" disabled>States / provinces</button>
+ <button type="button" id="world-lakes-toggle" aria-pressed="false" disabled>Lakes</button>
+ <button type="button" id="world-peaks-toggle" aria-pressed="false" disabled>Mountain peaks</button>
+ <button type="button" id="world-fine-toggle" aria-pressed="false" disabled>Detailed country lines</button>
+ </div><p id="world-detail-status" role="status" aria-live="polite">Loading optional local world geography. Some layers may not be installed.</p>
+ <section class="source-coverage" aria-label="Installed world geography layers"><h3>Geographic coverage on this device</h3><div id="world-coverage-grid" class="source-coverage-grid" aria-live="polite">Checking sources…</div><p>Reference layers are generalized. Uninstalled layers are never described as complete coverage.</p></section>
+ <p id="world-physical-provenance" class="physical-source-note" aria-live="polite">Detailed shorelines and inland-water reference data are optional.</p>
+ <div id="world-city-results" class="world-city-results" aria-label="Matching source-listed cities"></div>
+ </details>
+ <div class="capital-status" id="capital-status" role="status">Reference capital points: loading optional local dataset. The data is historical and not a current authoritative list.</div>
+ <section class="world-at-glance" aria-label="World overview"><div><strong id="world-feature-count">—</strong><span>source-listed geographic features</span></div><div><strong id="world-continent-count">—</strong><span>represented geographic groups (including open-ocean source category)</span></div><div><strong id="capitals-count">—</strong><span>historical reference capital points, not certified current capitals</span></div></section>
+ <section class="detail" id="detail" aria-live="polite"><div class="detail-icon">◎</div><div><span class="overline">SELECT A LOCATION</span><h3>Start exploring.</h3><p>Click any country to see its continent, source identifier and approximate position. Double-click or select Focus to zoom.</p></div></section>
+ <div class="share-section"><label for="atlas-share-link">Share this country view</label><div><input id="atlas-share-link" readonly value="" aria-label="Current country view URL"/><button id="atlas-share-copy" type="button">Copy link</button></div><small id="atlas-share-status" role="status">Links select a country in the same generalized dataset, not a legal boundary view.</small></div>
+ <section class="measure" id="measure-panel" hidden><div><span class="overline">WORLD DISTANCE COMPARISON</span><strong id="measure-result">Choose two countries to compare</strong><p>Approximate great-circle distance between source-listed representative points, not a road or flight itinerary.</p></div><button id="clear-distance">Clear comparison</button></section>
+ <div class="footer"><span>© Bharat Atlas · World Explorer research edition</span><span>Made with Natural Earth · Public domain · No official boundary endorsement</span></div>
+</main>
+</div>
+</div>
+<script defer src="./world-explore-search.js"></script><script defer src="./world-scale.js"></script><script defer src="./world-camera-scheduler.js"></script><script defer src="./world.js"></script><script defer src="./world-detail-geometry.js"></script><script defer src="./world-place-search.js"></script><script defer src="./world-detail.js"></script>
+</body>
+</html>

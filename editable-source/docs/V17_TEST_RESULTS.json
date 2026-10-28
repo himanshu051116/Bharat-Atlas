@@ -1,0 +1,15 @@
+{
+  "version": "0.17",
+  "date": "2026-10-23",
+  "javascriptPassed": 56,
+  "pythonPassed": 46,
+  "browserMockTestsPassed": true,
+  "webgl1Available": false,
+  "webgl2Available": false,
+  "realMapLibreRendered": false,
+  "officialGeometryVerified": false,
+  "releaseGuardProductionBlocked": true,
+  "bundledOfficialData": false,
+  "deployed": false,
+  "notes": "Interactive MapLibre tests are mocked; browser WebGL context unavailable. Earlier v0.16 research preview remains deployed."
+}

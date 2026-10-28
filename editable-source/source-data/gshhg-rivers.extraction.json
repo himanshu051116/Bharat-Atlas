@@ -1,0 +1,15 @@
+{
+  "featureCount": 1723,
+  "sha256": "27884a5cc5b9039ed21ccf6cc8f5626cb05375d594024df214802336a06aac2a",
+  "bytes": 564162,
+  "source": "GSHHG 2.3.6 / WDBII via basemap-data 2.0.0",
+  "bbox": [
+    68,
+    6,
+    99,
+    38
+  ],
+  "licence": "LGPL-3.0-or-later",
+  "administrativeAccuracy": "Not applicable; physical watercourse overlay, some features are outside India",
+  "names": "Not provided; intentionally unlabelled"
+}

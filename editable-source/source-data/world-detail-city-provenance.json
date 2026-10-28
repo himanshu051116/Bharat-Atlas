@@ -1,0 +1,14 @@
+{
+  "reviewed": true,
+  "publisher": "Natural Earth",
+  "licence": "Public domain",
+  "reviewNotes": "Copied the existing 71 Natural Earth 1:50m India-tagged coordinates, not a complete national or global city index; not current city-status verification. No borders modified.",
+  "sources": {
+    "cities": {
+      "url": "https://github.com/nvkelso/natural-earth-vector/blob/master/geojson/ne_50m_populated_places.geojson",
+      "version": "existing pinned 1:50m subset; inherited",
+      "licence": "Public domain",
+      "sha256": "dd0ec3331fbfed5dec0b6203b88c40b3ee313eecf95ed06dc70544c57b3c9cc9"
+    }
+  }
+}

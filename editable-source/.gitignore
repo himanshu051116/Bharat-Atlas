@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+node_modules/
+.DS_Store
+*.log
+data/states.provisional.geojson
+data/preview-provenance.json
+
+# Copyrighted Survey of India geometry is downloaded separately with applicable rights.
+data/official-india/

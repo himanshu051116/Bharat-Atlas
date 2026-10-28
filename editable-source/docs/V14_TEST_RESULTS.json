@@ -1,0 +1,28 @@
+{
+  "version": "0.14",
+  "mode": "LOCAL ONLY \u2014 NOT DEPLOYED",
+  "verified": {
+    "javascriptUnitTests": 48,
+    "pythonUnitTests": 29,
+    "browser": "Isolated mocked MapLibre synthetic desktop/mobile browser suite PASSED",
+    "bundledAppSyntax": "PASSED",
+    "staticBuild": "PASSED",
+    "researchPreviewReleaseGuard": "PASSED",
+    "productionReleaseGuard": "BLOCKED AS INTENDED",
+    "gisFormatsTested": [
+      "ESRI Shapefile",
+      "GeoPackage",
+      "GeoJSON candidate export"
+    ],
+    "tileConcurrencyTests": "PASSED"
+  },
+  "notVerified": [
+    "Real MapLibre/WebGL paint or GPU performance",
+    "Survey of India 2026 geographic certification",
+    "Shaksgam claimed border coverage",
+    "National streets/place-search coverage",
+    "Thousand-concurrent-user load test",
+    "External asset availability on client network"
+  ],
+  "repositoryOrDeploymentMutations": false
+}

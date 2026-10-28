@@ -1,0 +1,7 @@
+{
+  "officiallyVerified": false,
+  "licence": "LGPL-3.0-or-later",
+  "attribution": "GSHHG 2.3.6/WDBII watercourses, via matplotlib Basemap Data 2.0.0; Wessel & Smith / NOAA / University of Hawai'i",
+  "sourceUrl": "https://www.soest.hawaii.edu/wessel/gshhg/",
+  "description": "Historical generalized, unlabelled watercourse segments in an India-focused rectangle, including adjacent countries. NOT verified against contemporary Indian geography. Data originally from WDBII/GSHHG 2.3.6, redistributed with LGPL-3.0-or-later notice. Not suitable for legal, engineering, or navigational uses."
+}

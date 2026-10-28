@@ -1,0 +1,59 @@
+{
+  "format": "BharatAtlasEndToEndProgramAudit1",
+  "generatedAtUtc": "2026-10-24T20:23:55.744606+00:00",
+  "project": "Bharat Atlas",
+  "sourceVersion": "0.38",
+  "programStatus": "RESEARCH DEVELOPMENT ONLY",
+  "productionApproved": false,
+  "automatedChecksPassed": true,
+  "productionGuardRejects": true,
+  "bundledTileCount": 608,
+  "tileLayerKinds": [
+    "coastlines",
+    "lakes",
+    "rivers",
+    "settlements"
+  ],
+  "officialPoliticalGeometryVerified": false,
+  "nationalTransportComplete": false,
+  "realGpuAndPhysicalDevicesValidated": false,
+  "steps": [
+    {
+      "command": "node --test tests/atlas_labs.test.mjs tests/compare.test.mjs tests/coordinates.test.mjs tests/coverage_inspector.test.mjs tests/data.test.mjs tests/data_readiness.test.mjs tests/detail-math.test.mjs tests/explorer_tools.test.mjs tests/export.test.mjs tests/gazetteer.test.mjs tests/geography.test.mjs tests/hydrology.test.mjs tests/import_guard.test.mjs tests/landcover.test.mjs tests/motion.test.mjs tests/multisource_tiles.test.mjs tests/natural_earth_places.test.mjs tests/physical_only.test.mjs tests/places.test.mjs tests/renderer-health.test.mjs tests/road_topology.test.mjs tests/routing_restrictions.test.mjs tests/search_shards.test.mjs tests/shorelines.test.mjs tests/tiles.test.mjs tests/tiles_bounded_stream.test.mjs tests/v13_safety.test.mjs tests/v14_tiles.test.mjs",
+      "passed": true,
+      "exitCode": 0,
+      "tail": "le payload refuses oversized streamed bytes before digest or caching\nok 131 - tile payload refuses oversized streamed bytes before digest or caching\n  ---\n  duration_ms: 2.772757\n  type: 'test'\n  ...\n# Subtest: browser geography rejects bow-tie/self crossing rings\nok 132 - browser geography rejects bow-tie/self crossing rings\n  ---\n  duration_ms: 2.330183\n  type: 'test'\n  ...\n# Subtest: reject outside polygon holes and consecutive duplicate vertices\nok 133 - reject outside polygon holes and consecutive duplicate vertices\n  ---\n  duration_ms: 0.96046\n  type: 'test'\n  ...\n# Subtest: accept standard valid polygons including holes\nok 134 - accept standard valid polygons including holes\n  ---\n  duration_ms: 0.329499\n  type: 'test'\n  ...\n# Subtest: bounded GeoJSON stream reader stops on oversized chunks\nok 135 - bounded GeoJSON stream reader stops on oversized chunks\n  ---\n  duration_ms: 0.785586\n  type: 'test'\n  ...\n# Subtest: bounded reader correctly decodes split UTF-8 text\nok 136 - bounded reader correctly decodes split UTF-8 text\n  ---\n  duration_ms: 1.90276\n  type: 'test'\n  ...\n# Subtest: tile LRU cache is bounded, protects buffers and evicts the oldest\nok 137 - tile LRU cache is bounded, protects buffers and evicts the oldest\n  ---\n  duration_ms: 0.451696\n  type: 'test'\n  ...\n# Subtest: tile protocol cache avoids duplicate requests without bypassing SHA-256\nok 138 - tile protocol cache avoids duplicate requests without bypassing SHA-256\n  ---\n  duration_ms: 2.690276\n  type: 'test'\n  ...\n# Subtest: simultaneous vector-tile readers share one verified request and get independent buffers\nok 139 - simultaneous vector-tile readers share one verified request and get independent buffers\n  ---\n  duration_ms: 2.522172\n  type: 'test'\n  ...\n# Subtest: aborting one tile consumer does not kill the fetch needed by another\nok 140 - aborting one tile consumer does not kill the fetch needed by another\n  ---\n  duration_ms: 2.0434\n  type: 'test'\n  ...\n# Subtest: aborting all readers aborts physical fetch and permits clean retry\nok 141 - aborting all readers aborts physical fetch and permits clean retry\n  ---\n  duration_ms: 0.896515\n  type: 'test'\n  ...\n# Subtest: tile handler refuses data with oversized Content-Length before buffering\nok 142 - tile handler refuses data with oversized Content-Length before buffering\n  ---\n  duration_ms: 0.661192\n  type: 'test'\n  ...\n1..142\n# tests 142\n# suites 0\n# pass 142\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 1086.323348\n"
+    },
+    {
+      "command": "/opt/pyvenv/bin/python -m unittest discover -s tests -p test_*.py -q",
+      "passed": true,
+      "exitCode": 0,
+      "tail": "/opt/pyvenv/lib/python3.13/site-packages/shapely/creation.py:218: RuntimeWarning: invalid value encountered in linestrings\n  return lib.linestrings(coords, np.intc(handle_nan), out=out, **kwargs)\n----------------------------------------------------------------------\nRan 99 tests in 18.321s\n\nOK\nblocked_missing_local_renderer \u2014 /tmp/tmpj3kewrrq/real-webgl-proof.json\n"
+    },
+    {
+      "command": "/opt/pyvenv/bin/python scripts/build.py",
+      "passed": true,
+      "exitCode": 0,
+      "tail": "Built local research viewer: /mnt/data/atlas_integrated_build/dist with 756 assets\n"
+    },
+    {
+      "command": "/opt/pyvenv/bin/python scripts/verify_preview.py",
+      "passed": true,
+      "exitCode": 0,
+      "tail": "{\n  \"version\": \"0.38\",\n  \"modules\": 26,\n  \"assetsVerified\": 756,\n  \"officialGeometryVerified\": false,\n  \"previewOnly\": true\n}\n"
+    }
+  ],
+  "releaseGuard": {
+    "command": "/opt/pyvenv/bin/python scripts/release_guard.py --target production",
+    "passed": false,
+    "exitCode": 1,
+    "tail": "BLOCKED: v0.37 lacks independently validated 2026 Survey of India geometry and reuse permissions\nBLOCKED: genuine MapLibre/WebGL rendering and national road/settlement data and genuine river rendering not verified\nBLOCKED: no cross-browser device and 1,000-concurrent-user performance evidence\nBLOCKED: learning, district observatory, historical-border comparison and publishing studio lack independently reviewed data and release tests\n"
+  },
+  "noDeploymentOrRepoMutation": true,
+  "remainingHardGates": [
+    "Legal rights and Survey of India territory audit",
+    "Nationwide roads/rail/settlement datasets",
+    "Unmocked MapLibre/WebGL2 on actual desktop and phones",
+    "Load, accessibility, security, monitoring and rollback acceptance"
+  ]
+}

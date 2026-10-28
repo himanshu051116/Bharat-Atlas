@@ -1,0 +1,28 @@
+{
+  "version": "0.11",
+  "mode": "local research only",
+  "deployed": false,
+  "tests": {
+    "javascript": {
+      "passed": 26,
+      "failed": 0
+    },
+    "python": {
+      "passed": 21,
+      "failed": 0
+    },
+    "mocked_browser": "passed",
+    "synthetic_mvt_decoder": "passed"
+  },
+  "productionGuard": "blocked intentionally",
+  "officialBoundaryVerified": false,
+  "realMapLibreWebGLVerified": false,
+  "realLicensedRoadNetworkBundled": false,
+  "knownCriticalGaps": [
+    "Survey of India 2026 geometry and licence",
+    "Shaksgam and northern boundary verification",
+    "real MapLibre WebGL test",
+    "real roads, rivers and nationwide geocoding",
+    "1,000-user load test"
+  ]
+}

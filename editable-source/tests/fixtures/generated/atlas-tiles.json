@@ -1,0 +1,38 @@
+{
+  "attribution": "Synthetic test geometry; not geographic data",
+  "bounds": [
+    60.0,
+    3.0,
+    102.0,
+    41.0
+  ],
+  "featureOccurrences": {
+    "rivers": 7,
+    "roads": 7,
+    "settlements": 5
+  },
+  "format": "BharatAtlasMVT1",
+  "layers": [
+    "rivers",
+    "roads",
+    "settlements"
+  ],
+  "licence": "SYNTHETIC TEST FIXTURE \u2014 NO REAL WORLD DATA",
+  "maxzoom": 8,
+  "minzoom": 4,
+  "note": "Research tile package; not verified by Survey of India. No official boundary certification.",
+  "officiallyVerified": false,
+  "sourceDescription": "Artificial geometry near Bhopal solely for validating MVT generation and MapLibre layer loading.",
+  "sourceUrl": "https://example.org/synthetic-test-map",
+  "tileCount": 8,
+  "tileHashes": {
+    "4/11/6.pbf": "8f03a9de135dd1988bb5c427edabdf0c1e5624fca5912394f892eef03aacd067",
+    "5/22/13.pbf": "fecb74eba78393d668d1a8621e9f2b73a57cda1f51aff92ad469624490ae2beb",
+    "6/45/27.pbf": "d7c186ab6105c0560ac5515ade434b0244fa319d1182d9a9c47facb645561739",
+    "7/91/55.pbf": "27525d6cd63baa31a142c0196cafbd92e96b3a5fc954a321265b00cc6620e959",
+    "8/182/110.pbf": "b3885831a4e1c33fc5fbcb8ad67af81b95eeee9276759df482f184643674d496",
+    "8/182/111.pbf": "0cdcebb352d59858edc83b3ca2c95c75426769de0cedeb2ba8ba51a4493a815c",
+    "8/183/110.pbf": "2205585f6356dc51874fd666ee68c44d8b00621d87fdda6dc0f65799906ccaac",
+    "8/183/111.pbf": "ed71344bf2b2f553dd4440267569515a9858cc9f7ae7c9d327651a080ce6da85"
+  }
+}

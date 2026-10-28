@@ -1,0 +1,11 @@
+{
+  "version": "0.12",
+  "deployment": false,
+  "javascriptTestsPassed": 35,
+  "pythonTestsPassed": 22,
+  "mockedDesktopMobileSmokePassed": true,
+  "actualMapLibreWebGLVerified": false,
+  "officialGeometryVerified": false,
+  "actualTrafficLoadTestRun": false,
+  "productionGuardBlocked": true
+}

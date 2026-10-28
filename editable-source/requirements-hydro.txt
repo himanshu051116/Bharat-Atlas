@@ -1,0 +1,5 @@
+# Optional only to REGENERATE the included 2016-vintage GSHHG/WDBII river overlay.
+# Not needed for deploying or browsing the already generated static vector tiles.
+basemap==2.0.0
+basemap-data==2.0.0
+shapely>=2.0,<3
