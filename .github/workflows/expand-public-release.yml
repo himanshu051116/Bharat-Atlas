@@ -1,0 +1,45 @@
+name: Expand Bharat Atlas public-safe release
+on:
+  push:
+    branches: [atlas-v1.11-release-staging]
+    paths:
+      - site.zip
+      - release/source-parts/**
+      - .github/workflows/expand-public-release.yml
+permissions:
+  contents: write
+jobs:
+  expand:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out release branch
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: true
+      - name: Check archive integrity and expand
+        shell: bash
+        run: |
+          set -euo pipefail
+          sha256sum site.zip
+          cat release/source-parts/source.part* > /tmp/bharat-atlas-source.zip
+          printf '%s  %s\n' '4689ac8875be8c05af0f8fcf9624edb8312374afaaa6dadbe667147468851e06' /tmp/bharat-atlas-source.zip | sha256sum -c -
+          mkdir -p public-site editable-source
+          unzip -o -q site.zip -d public-site
+          unzip -o -q /tmp/bharat-atlas-source.zip -d editable-source
+          test -s public-site/index.html
+          test -s public-site/app.bundle.js
+          test -s editable-source/src/main.mjs
+          echo "Site files: $(find public-site -type f | wc -l)"
+          echo "Source files: $(find editable-source -type f | wc -l)"
+      - name: Commit expanded source and public site
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add public-site editable-source
+          if git diff --cached --quiet; then
+            echo 'Already expanded'
+            exit 0
+          fi
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Expand verified v1.11 release source and public website [skip ci]'
+          git push origin "HEAD:${GITHUB_REF_NAME}"
