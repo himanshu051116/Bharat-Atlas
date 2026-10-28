@@ -5,7 +5,7 @@
   "catalogueSource": "National Portal of India IGOD (names only)",
   "regionCatalogueCount": 36,
   "verifiedAdminPolygonsBundled": false,
-  "releaseMode": "LOCAL RESEARCH ONLY",
+  "releaseMode": "PUBLIC RESEARCH PREVIEW (NO OFFICIAL POLITICAL GEOMETRY)",
   "officialGeometryVerified": false,
   "hasAuthoritativeData": false,
   "externalMapLibreDependency": true,
@@ -63,9 +63,14 @@
   },
   "assets": [
     {
+      "path": "PUBLIC_RELEASE_NOTICE.md",
+      "bytes": 649,
+      "sha256": "2a85e558cdeccd7daf7d89f486079fd3580bbd3399f2e2f479406cf41e27fde9"
+    },
+    {
       "path": "README_PREVIEW.txt",
-      "bytes": 6217,
-      "sha256": "cfd1e1a8e787fc4628de6aa24e523add2f167007a1fc7d1c58941a1877c48c26"
+      "bytes": 1518,
+      "sha256": "b6679f2ef4a8980473dc2d5b414dec1dd0f31cd87c89fa1a8b1d3e6c05faa20e"
     },
     {
       "path": "START_PREVIEW_WINDOWS.bat",
@@ -3798,6 +3803,21 @@
       "sha256": "4e07e5afc6d8365d3714c46e407138dfb42b60447d52099ffc43410d3597207f"
     },
     {
+      "path": "data/world-detail/cities.geojson",
+      "bytes": 42001,
+      "sha256": "cadfc967c7d52c91af54598715bfb1ef0e7c721cfe86b676c473d99cf6023c74"
+    },
+    {
+      "path": "data/world-detail/manifest.json",
+      "bytes": 2100,
+      "sha256": "06afe5aa6371c4188ffee58cf1db4ce4504bd8f5c648d5fa3c4bb3017f086ade"
+    },
+    {
+      "path": "data/world-detail/peaks.geojson",
+      "bytes": 14681,
+      "sha256": "a9614d38e9eff38f31b2c393087a48cf0baa40cf9baaf9a720dcd0e244073431"
+    },
+    {
       "path": "data/world/COPYING.GPL",
       "bytes": 35149,
       "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
@@ -3858,24 +3878,9 @@
       "sha256": "25d94f164102366053efc7f2661878c2435f61cb94ee5c6f53a52c80515bbe5c"
     },
     {
-      "path": "data/world-detail/cities.geojson",
-      "bytes": 42001,
-      "sha256": "cadfc967c7d52c91af54598715bfb1ef0e7c721cfe86b676c473d99cf6023c74"
-    },
-    {
-      "path": "data/world-detail/manifest.json",
-      "bytes": 2100,
-      "sha256": "06afe5aa6371c4188ffee58cf1db4ce4504bd8f5c648d5fa3c4bb3017f086ade"
-    },
-    {
-      "path": "data/world-detail/peaks.geojson",
-      "bytes": 14681,
-      "sha256": "a9614d38e9eff38f31b2c393087a48cf0baa40cf9baaf9a720dcd0e244073431"
-    },
-    {
       "path": "index.html",
-      "bytes": 27612,
-      "sha256": "6f00d4e74a848cf84bf132d6fce3221c82ed699619080f0395f12e6bf89b581f"
+      "bytes": 27628,
+      "sha256": "5d8bd6dc9c100178df37653c4ae4d98ad7a7543b9e9d61d0bb4566ab7852039d"
     },
     {
       "path": "legacy/app.js",
@@ -3972,5 +3977,6 @@
       "bytes": 39113,
       "sha256": "7b1845be10b25a4c549e6618dc70972551df45398b9c47c8d464bf092ca4d374"
     }
-  ]
+  ],
+  "previewOnly": true
 }
