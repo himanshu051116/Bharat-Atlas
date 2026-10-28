@@ -4,7 +4,7 @@ import {readFileSync,existsSync} from 'node:fs';
 const read=p=>readFileSync(p,'utf8');
 test('India boot never fetches unverified politics',()=>{
  const app=read('public-site/app.bundle.js'),html=read('public-site/index.html');
- assert.match(app,/initializeSafePhysicalMode\(\);initMap\(\)/);
+ assert.match(app,/initializeSafePhysicalMode\(\);initMap\(\)/);assert.doesNotMatch(app,/atlasLoadTransportPack\(\)\.then/);
  assert.doesNotMatch(app,/initMap\(\);fetchPreview\(\)/);
  assert.match(html,/Borders unavailable/);
  assert.match(html,/physical-preview\.svg/);

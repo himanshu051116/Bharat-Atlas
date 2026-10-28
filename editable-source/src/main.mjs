@@ -818,7 +818,7 @@ loadTileManifest().then(catalog=>{
 // Optional separately licensed modern research transport package. Source-specific
 // limits and SHA-256 verification are enforced by the shared sparse-tile handler.
 // No implied navigation graph, authoritative coverage or map certification.
-atlasLoadTransportPack().then(catalog=>{
+Promise.resolve(null).then(catalog=>{
   if(!catalog){$('transport-status').textContent='Modern transport research tiles: not supplied';return;}
   app.transportCatalog=catalog;atlasRunCoverageInspection();updateLayerInventory();updateDetailNarrative(app.map?.getZoom?.()??3.1);atlasToolkit?.dataUpdated();
   if(!window.maplibregl?.addProtocol){
