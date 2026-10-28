@@ -434,7 +434,7 @@ function validateLandFeatures(fc){
  return fc;
 }
 async function loadLandcover({fetcher=fetch,base='./data/landcover/',hasher=null}={}){
- const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),4500);
+ const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),9500);
  try{
   const response=await fetcher(base+'manifest.json',{signal:controller.signal});
   if(response.status===404)return null;if(!response.ok)throw Error('Land mask manifest unavailable');
@@ -2474,7 +2474,7 @@ function retryRenderer(){
     toast('Please allow the previous map attempt to finish before retrying.');return false;
   }
   if(app.map){try{app.map.remove?.()}catch(e){console.warn('Previous map cleanup:',e)}app.map=null;}
-  app.ready=false;
+  app.ready=false;$('map-stage').classList.remove('map-live');
   // A lost GPU context must not keep old map canvases or event listeners alive.
   $('map').replaceChildren();
   const result=initMap();
@@ -2487,7 +2487,7 @@ function retryRenderer(){
 function rendererFallback(title,message){
   app.rendererFailure={title,message};
   overlay(title,message,false);
-  $('map-stage').classList.add('fallback-active');
+  $('map-stage').classList.remove('map-live');if(app.features||app.landcover)$('map-stage').classList.add('fallback-active');else $('map-stage').classList.remove('fallback-active');
   if(app.features||app.landcover){
     try{
       const output=app.features?renderResearchSVG(app.features,{selected:app.selected,source:app.source,labels:app.labels,physicalLines:app.rivers&&app.source?.kind!=='import'?app.hydrology:null,physicalShore:app.shores&&app.source?.kind!=='import'?app.shorelines:null,physicalLand:app.source?.kind!=='import'?app.landcover:null,physicalTheme:app.style==='physical'&&!!app.landcover&&app.source?.kind!=='import'}):renderPhysicalOnlySVG({land:app.landcover,hydrology:app.rivers?app.hydrology:null,shorelines:app.shores?app.shorelines:null,officialClaim:app.officialClaim});
@@ -2532,7 +2532,7 @@ function retireFailedRenderer(title,message,failed=app.map){
   rendererFallback(title,message);
   if(failed)queueMicrotask(()=>{try{failed.remove?.()}catch(error){console.warn('Failed renderer cleanup:',error)}});
 }
-function hideOverlay(){ $('map-overlay').hidden=true;$('map-stage').classList.remove('fallback-active'); }
+function hideOverlay(){ $('map-overlay').hidden=true;$('map-stage').classList.remove('fallback-active');$('map-stage').classList.add('map-live'); }
 function changeSourceAttribution(){
   if(!app.source)return;
   $('attribution').textContent=`${app.source.title} · ${app.source.licence}`;
@@ -2912,7 +2912,20 @@ if(atlasRequestedView.style && atlasRequestedView.style!=='physical'){
     const on=button.dataset.style===app.style;button.classList.toggle('active',on);button.setAttribute('aria-pressed',String(on));
   });
 }
-wire();$('state-total').textContent='28';$('ut-total').textContent='8';renderRegions();journeySync();updateDetailNarrative(3.1);updateLayerInventory();atlasRunCoverageInspection();initMap();fetchPreview();
+function initializeSafePhysicalMode(){
+  app.boundaryLoadFailed=true; app.style='physical';
+  $('boundary-retry-actions').hidden=true;
+  $('region-coverage-tag').textContent='PHYSICAL ONLY · FOR BORDERS SEE SURVEY OF INDIA';
+  $('map-source-status').textContent='PHYSICAL REFERENCE · NOT INDIA BORDERS';
+  $('region-list').setAttribute('aria-busy','false');
+  document.querySelectorAll('[data-style]').forEach(b=>{const a=b.dataset.style==='physical';b.classList.toggle('active',a);b.setAttribute('aria-pressed',String(a))});
+  window.setTimeout(()=>{
+    if(app.ready && app.landcover)return;
+    if(!app.landcover)overlay('Physical map delayed','The static physical reference remains visible. Interactive geographic data is unavailable; this is not a political map.');
+    else if(!app.ready && app.map)retireFailedRenderer('Renderer timeout','Switching to the static, self-hosted physical geography view.');
+  },10000);
+}
+wire();$('state-total').textContent='28';$('ut-total').textContent='8';renderRegions();journeySync();updateDetailNarrative(3.1);updateLayerInventory();atlasRunCoverageInspection();initializeSafePhysicalMode();initMap();
 // Local roads/rivers are optional; delayed/unreachable detail data must never block the base map.
 loadTileManifest().then(catalog=>{
   if(!catalog){$('tile-status').textContent='No local road or river tiles included · boundary-only research atlas';return}
@@ -3047,6 +3060,6 @@ async function loadOfficialIndiaClaim(){
     $('map-source-status').title='Indian claim extent only; not an assertion of effective control; independent 2026 map comparison pending';
   }catch(e){console.warn('Official claim outline not enabled:',e.message);}
 }
-loadOfficialIndiaClaim();
+// Certified political data is NOT bundled; never auto-load an old cached claim outline.
 
 })();

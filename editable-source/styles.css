@@ -209,3 +209,14 @@
 .atlas-readiness-tag.blocked{background:#faece8;color:#ac553d}
 .atlas-readiness-tag.research_available{background:#e8f2e9;color:#41744d}
 .atlas-zoom-inventory{font-size:10px;line-height:1.65;background:#eef6f2;padding:9px 12px;border-radius:8px;color:#466c5c}
+
+/* v1.11.1 — Always visible physical reference when JavaScript/GPU fails */
+.map-stage .physical-poster{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#dfeff3;z-index:1;pointer-events:none}
+.map-stage .map-canvas{z-index:2}
+.map-stage:not(.map-live) .map-canvas{opacity:0;pointer-events:none}
+.map-stage.map-live .map-canvas{opacity:1;pointer-events:auto}
+.map-stage.map-live .physical-poster{display:none}
+.map-stage .map-overlay:not(.fallback-preview){background:transparent;justify-content:flex-start;align-items:flex-start;text-align:left;gap:5px;padding:14px;pointer-events:none}
+.map-stage .map-overlay:not(.fallback-preview) strong,.map-stage .map-overlay:not(.fallback-preview) p{padding:6px 10px;border-radius:7px;background:#fffdf1f2;max-width:min(95%,420px);box-shadow:0 2px 10px #12362418}
+.map-stage .map-overlay:not(.fallback-preview) button{pointer-events:auto}
+@media(max-width:760px){.map-stage .map-overlay:not(.fallback-preview){padding:9px}.map-stage .map-overlay:not(.fallback-preview) p{font-size:10px}}

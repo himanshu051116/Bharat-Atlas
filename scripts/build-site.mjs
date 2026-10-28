@@ -1,43 +1,43 @@
-import { readFileSync, mkdirSync, writeFileSync } from 'node:fs';
-import { join, resolve, dirname } from 'node:path';
-import { inflateRawSync } from 'node:zlib';
-
-// Dependency-free ZIP reader; expects the checked, public-safe bundle.
-const archive = readFileSync(resolve('site.zip'));
-const output = resolve('dist');
-const eocdSignature = 0x06054b50;
-const centralSignature = 0x02014b50;
-const localSignature = 0x04034b50;
-let eocd = -1;
-for (let i = archive.length - 22; i >= Math.max(0, archive.length - 65557); i--) {
-  if (archive.readUInt32LE(i) === eocdSignature) { eocd = i; break; }
+import {cpSync,existsSync,mkdirSync,readFileSync,readdirSync,rmSync,writeFileSync} from 'node:fs';
+import {createHash} from 'node:crypto';
+import {resolve,join,relative} from 'node:path';
+const input=resolve('public-site'),output=resolve('dist');
+if(!existsSync(join(input,'index.html')))throw Error('Public release directory missing');
+const manifest=JSON.parse(readFileSync(join(input,'build-manifest.json'),'utf8'));
+if(manifest.previewOnly!==true||manifest.officialGeometryVerified!==false||manifest.verifiedAdminPolygonsBundled!==false)throw Error('Public research release safety flags invalid');
+if(manifest.assets.length<780)throw Error('Incomplete baseline asset manifest');
+const amended=new Set(['index.html','app.bundle.js','styles.css','world.js','world.html','offline-shell.js']);
+const expected=new Set(manifest.assets.map(x=>x.path));
+const sha=buf=>createHash('sha256').update(buf).digest('hex');
+for(const entry of manifest.assets){
+ const name=entry.path;
+ if(name.startsWith('/')||name.includes('..')||name.includes('\\')||/official-india\/|india-claim\.geojson/i.test(name))throw Error('Unsafe or unapproved asset: '+name);
+ const path=resolve(input,name);
+ if(!path.startsWith(input+'/'))throw Error('Unsafe source path: '+name);
+ const data=readFileSync(path);
+ if(!amended.has(name)&&(data.length!==entry.bytes||sha(data)!==entry.sha256))throw Error('Unmodified geographic asset fails SHA-256: '+name);
 }
-if (eocd < 0) throw new Error('ZIP end of central directory not found');
-const total = archive.readUInt16LE(eocd + 10);
-let pos = archive.readUInt32LE(eocd + 16);
-let extracted = 0;
-for (let i = 0; i < total; i++) {
-  if (archive.readUInt32LE(pos) !== centralSignature) throw new Error('Invalid central ZIP header');
-  const method = archive.readUInt16LE(pos + 10);
-  const compressedSize = archive.readUInt32LE(pos + 20);
-  const uncompressedSize = archive.readUInt32LE(pos + 24);
-  const filenameLength = archive.readUInt16LE(pos + 28);
-  const extraLength = archive.readUInt16LE(pos + 30);
-  const commentLength = archive.readUInt16LE(pos + 32);
-  const localOffset = archive.readUInt32LE(pos + 42);
-  const name = archive.subarray(pos + 46, pos + 46 + filenameLength).toString('utf8');
-  pos += 46 + filenameLength + extraLength + commentLength;
-  if (name.endsWith('/')) continue;
-  const dest = resolve(output, name);
-  if (!dest.startsWith(output + '/') || name.includes('\\')) throw new Error('Unsafe ZIP path: ' + name);
-  if (archive.readUInt32LE(localOffset) !== localSignature) throw new Error('Invalid local ZIP header: ' + name);
-  const start = localOffset + 30 + archive.readUInt16LE(localOffset + 26) + archive.readUInt16LE(localOffset + 28);
-  const raw = archive.subarray(start, start + compressedSize);
-  const file = method === 8 ? inflateRawSync(raw) : method === 0 ? raw : null;
-  if (!file || file.length !== uncompressedSize) throw new Error('Invalid size or compression for ' + name);
-  mkdirSync(dirname(dest), { recursive: true });
-  writeFileSync(dest, file);
-  extracted++;
+function list(dir,rel=''){
+ let items=[];
+ for(const item of readdirSync(dir,{withFileTypes:true})){
+  const path=rel?rel+'/'+item.name:item.name;
+  if(item.isSymbolicLink())throw Error('Symlink not permitted in release');
+  if(item.isDirectory())items.push(...list(join(dir,item.name),path));
+  else if(item.isFile()&&path!=='build-manifest.json')items.push(path);
+ }
+ return items;
 }
-if (extracted < 780) throw new Error('Incomplete public site: only ' + extracted + ' assets');
-console.log('Bharat Atlas release extracted:', extracted, 'files');
+const names=list(input).sort();
+for(const name of names)if(!expected.has(name)&&name!=='physical-preview.svg')throw Error('Unexpected additional release file: '+name);
+if(!names.includes('physical-preview.svg'))throw Error('Missing always-visible physical map');
+const library=resolve('node_modules/maplibre-gl/dist');
+for(const file of ['maplibre-gl.js','maplibre-gl.css'])if(!existsSync(join(library,file)))throw Error('Pinned MapLibre distribution missing: '+file);
+rmSync(output,{recursive:true,force:true});mkdirSync(output,{recursive:true});cpSync(input,output,{recursive:true});
+mkdirSync(join(output,'vendor'),{recursive:true});
+for(const file of ['maplibre-gl.js','maplibre-gl.css'])cpSync(join(library,file),join(output,'vendor',file));
+manifest.assets=names.map(name=>{const bytes=readFileSync(join(output,name));return {path:name,bytes:bytes.length,sha256:sha(bytes)}});
+manifest.version='1.11.1';manifest.externalMapLibreDependency=false;
+manifest.releaseMode='PUBLIC PHYSICAL RESEARCH PREVIEW — NO CERTIFIED POLITICAL BOUNDARIES';
+manifest.politicalBoundarySource='Not bundled: reference the Survey of India 2026 political map';
+writeFileSync(join(output,'build-manifest.json'),JSON.stringify(manifest,null,2)+'\n');
+console.log('Bharat Atlas v1.11.1 verified '+manifest.assets.length+' public-site assets + self-hosted MapLibre');

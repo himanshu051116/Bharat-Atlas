@@ -1,8 +1,15 @@
 {
   "name": "bharat-atlas-public-preview",
   "private": true,
-  "version": "1.11.0",
-  "description": "Bharat Atlas research preview — redistributable public-safe build",
-  "scripts": {"build": "node scripts/build-site.mjs"},
-  "engines": {"node": ">=20"}
+  "version": "1.11.1",
+  "description": "Bharat Atlas physical research viewer (no certified Indian political borders)",
+  "scripts": {
+    "build": "node --test tests/release.test.mjs && node scripts/build-site.mjs"
+  },
+  "engines": {
+    "node": "24.x"
+  },
+  "dependencies": {
+    "maplibre-gl": "5.13.0"
+  }
 }

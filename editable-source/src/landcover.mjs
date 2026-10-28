@@ -20,7 +20,7 @@ export function validateLandFeatures(fc){
  return fc;
 }
 export async function loadLandcover({fetcher=fetch,base='./data/landcover/',hasher=null}={}){
- const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),4500);
+ const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),9500);
  try{
   const response=await fetcher(base+'manifest.json',{signal:controller.signal});
   if(response.status===404)return null;if(!response.ok)throw Error('Land mask manifest unavailable');

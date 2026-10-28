@@ -211,7 +211,7 @@ function chooseFromSearch(){
   }else choose(result[0],true);
  }else window.BharatWorldDetail?.focusMatchingCity(state.query);
 }
-async function load(){try{const res=await fetch('./data/world/world-boundaries.json',{cache:'no-cache'});if(!res.ok)throw new Error('HTTP '+res.status);const data=JSON.parse(await readBoundedText(res,2000000));if(data.schema!=='bharat-world-generalized-v1'||!Array.isArray(data.features)||data.features.length<170)throw new Error('Invalid world atlas file');state.countries=data.features.map(c=>({...c,hi:displayHi(c)}));for(const c of state.countries){state.byId.set(c.id,c);const p=el('path',{d:c.path,id:'path-'+c.id,class:'country','fill-rule':'evenodd','data-continent':c.continent,'aria-label':c.name});p.addEventListener('click',()=>{if(Date.now()<(state.suppressClickUntil||0))return;choose(c,false)});p.addEventListener('dblclick',e=>{e.preventDefault();choose(c,true)});p.addEventListener('pointermove',e=>{if(state.drag?.moved||state.pointers.size>1)return;const tip=$('floating-tip');tip.textContent=c.name+' · '+c.continent;tip.hidden=false;const rect=$('map-wrap').getBoundingClientRect();tip.style.left=Math.min(rect.width-185,Math.max(8,e.clientX-rect.left+12))+'px';tip.style.top=Math.max(10,e.clientY-rect.top-34)+'px'});p.addEventListener('pointerleave',()=>{$('floating-tip').hidden=true});layer.append(p)}renderGrid();countryList();updateLabels();
+async function load(){try{const res=await fetch('./data/world/world-boundaries.json',{cache:'no-cache'});if(!res.ok)throw new Error('HTTP '+res.status);const data=JSON.parse(await readBoundedText(res,2000000));if(data.schema!=='bharat-world-generalized-v1'||!Array.isArray(data.features)||data.features.length<170)throw new Error('Invalid world atlas file');state.countries=data.features.map(c=>({...c,hi:displayHi(c)}));for(const c of state.countries){state.byId.set(c.id,c);const p=el('path',{d:c.path,id:'path-'+c.id,class:'country','fill-rule':'evenodd','data-continent':c.continent,'aria-label':c.name});if(c.name==='India'){p.style.opacity='0';p.style.pointerEvents='none';}p.addEventListener('click',()=>{if(Date.now()<(state.suppressClickUntil||0))return;choose(c,false)});p.addEventListener('dblclick',e=>{e.preventDefault();choose(c,true)});p.addEventListener('pointermove',e=>{if(state.drag?.moved||state.pointers.size>1)return;const tip=$('floating-tip');tip.textContent=c.name+' · '+c.continent;tip.hidden=false;const rect=$('map-wrap').getBoundingClientRect();tip.style.left=Math.min(rect.width-185,Math.max(8,e.clientX-rect.left+12))+'px';tip.style.top=Math.max(10,e.clientY-rect.top-34)+'px'});p.addEventListener('pointerleave',()=>{$('floating-tip').hidden=true});layer.append(p)}renderGrid();countryList();updateLabels();
  $('world-feature-count').textContent=String(state.countries.length);
  $('world-continent-count').textContent=String(new Set(state.countries.map(c=>c.continent)).size);
  $('map-mode-label').textContent=`${state.countries.length} GENERALIZED COUNTRY / TERRITORY FEATURES · NOT POLITICAL CERTIFICATION`;const india=state.countries.find(c=>c.name==='India');if(india){choose(india,false);setView({x:0,y:0,w:width});finishCamera();setActiveView('world')}
@@ -379,7 +379,7 @@ $('india-claims-toggle').addEventListener('click',()=>{
   if(old){old.style.fill=enabled?'transparent':'';old.style.stroke=enabled?'none':'';}
   $('india-claim-status').textContent=enabled
    ? 'India claim outline visible: Survey of India source-declared 1:16m generalized geometry; 2026 political map comparison and administrative control unverified.'
-   : 'India claim outline hidden: the generalized Natural Earth depiction is visible. It may differ from India’s territorial claims.';
+   : 'India political geometry is not installed. See the Survey of India official political map.';
   if(state.selected!==null)selectionDetails(state.byId.get(state.selected));
 });
 $('capitals-toggle').addEventListener('click',()=>{if(!state.capitalsAvailable)return;state.capitalsEnabled=!state.capitalsEnabled;$('capitals-toggle').setAttribute('aria-pressed',String(state.capitalsEnabled));renderCapitals()});
@@ -395,7 +395,7 @@ window.BharatWorldBridge={
  focusPoint:(lon,lat)=>{const west=Math.max(-180,lon-5),east=Math.min(180,lon+5);gotoExtent([west,Math.max(-85,lat-5),east,Math.min(85,lat+5)],75)},
  focusBounds:(bounds)=>{if(Array.isArray(bounds)&&bounds.length===4&&bounds.every(Number.isFinite))gotoExtent(bounds,56)}
 };
-renderGrid();requestAnimationFrame(updateDistanceScale);load().then(async()=>{await Promise.all([loadOfficialIndiaOverlay(),loadCapitalReferences()])});
+renderGrid();requestAnimationFrame(updateDistanceScale);load().then(async()=>{await loadCapitalReferences()});
 // Optional same-origin research-shell cache, never a requirement for viewing the map.
 if('serviceWorker' in navigator&&(location.protocol==='https:'||['localhost','127.0.0.1'].includes(location.hostname))){
   window.addEventListener('load',()=>navigator.serviceWorker.register('./offline-shell.js').catch(()=>{}));

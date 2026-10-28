@@ -1,30 +1,16 @@
-# Bharat Atlas v1.11 — public research preview
+# Bharat Atlas — v1.11.1 public physical research preview
 
-This repository contains the **complete public-safe Bharat Atlas v1.11 application**.
-The deployable static site (`site.zip`, 783 files) is archived at the root to ensure the large tile assets are transferred losslessly. Its contents are unpacked into `dist/` during Vercel builds using a dependency-free Node.js extractor.
+**Important:** The site intentionally does NOT draw an Indian national political claim outline or state/UT administrative borders: there is no published source-verified SoI 2026 vector dataset in this repository. The **Survey of India 13th edition (2026) political map** is the authoritative reference: https://surveyofindia.gov.in/pages/political-map-of-india.
 
-## Build and run
+This repair addresses an incorrect/misleading map display and browser-loading failures. The home page opens with a labeled historical physical coastline SVG with **no national borders**. On browsers with WebGL, locally bundled MapLibre powers interactive physical layers. On browsers without WebGL, the physical SVG remains available.
 
-```bash
-npm run build
-cd dist
-python3 -m http.server 8000
-```
+Source code is in \`editable-source/\`. The deployable, edited site is in \`public-site/\`. \`site.zip\` is the historic v1.11 archive and **is not used** by the Vercel build.
 
-On Vercel use **Framework: Other**, **Build Command: `npm run build`**, **Output Directory: `dist`**, and **Node: 20+**. The repo includes `vercel.json` with the public release's HTTP response headers. No external build dependencies are needed.
+## Release
 
-## Editable source
+- Run \`npm install\`, \`npm run build\`; output is \`dist/\`.
+- Pin \`maplibre-gl@5.13.0\`; it is bundled into \`dist/vendor/\` at build time and no CDN is necessary.
+- SHA-256 is verified for all previously published, unmodified geographic assets. Modified app files are packaged and rehashed to generate the new deployment manifest.
+- The official SoI political boundaries, geographic completeness, physical device performance, and real browser interaction **remain unverified**. Do not describe the map as certified or fit for legal or navigational use.
 
-The complete public-safe source (1,076 files) is retained in four byte-for-byte archive parts under `release/source-parts/` to fit upload limits. Reconstitute it with:
-
-```bash
-node scripts/reconstruct-source.mjs
-```
-
-The produced `bharat-atlas-v1.11-public-safe-source.zip` has SHA-256 `4689ac8875be8c05af0f8fcf9624edb8312374afaaa6dadbe667147468851e06`.
-
-## Scope and limitations
-
-This is a **research preview**, not a certified official Indian political map or navigational service. The separately supplied Survey of India claim-boundary vector and derivative cache were excluded from this public version pending a documented redistribution review. Historical/generalized layers and their source notices remain, and absence of official boundary certification must not be concealed.
-
-The site ZIP builds successfully and was verified to unpack 783 files. Release tests and source-data audits are documented in `docs/`. Authentic GPU/device acceptance and boundary validation remain outstanding.
+The world atlas uses public-domain Natural Earth historical generalized features; its inaccurate generalized India polygon is hidden. It is not a political map of India.
