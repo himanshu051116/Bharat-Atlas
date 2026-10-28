@@ -32,3 +32,14 @@ test('release is not certified political geography',()=>{
  assert.equal(m.officialGeometryVerified,false);
  assert.equal(m.verifiedAdminPolygonsBundled,false);
 });
+
+
+test('MapLibre cannot reduce the interactive map container to zero height',()=>{
+ const css=read('public-site/styles.css');
+ const app=read('public-site/app.bundle.js');
+ assert.match(css,/#map\.map-canvas\.maplibregl-map/);
+ assert.match(css,/position:\s*absolute;/);
+ assert.match(css,/min-height:\s*100%/);
+ assert.match(app,/size\.height<150/);
+ assert.match(app,/app\.map\?\.resize\?\.\(\)/);
+});

@@ -2532,7 +2532,19 @@ function retireFailedRenderer(title,message,failed=app.map){
   rendererFallback(title,message);
   if(failed)queueMicrotask(()=>{try{failed.remove?.()}catch(error){console.warn('Failed renderer cleanup:',error)}});
 }
-function hideOverlay(){ $('map-overlay').hidden=true;$('map-stage').classList.remove('fallback-active');$('map-stage').classList.add('map-live'); }
+function hideOverlay(){
+  const mapRoot=$('map'),size=mapRoot.getBoundingClientRect();
+  if(size.width<150||size.height<150){
+    $('map-stage').classList.remove('map-live');
+    overlay('Map still initializing','The geographic canvas is not correctly sized. The physical-reference image remains visible while the map recovers.');
+    console.warn('Bharat Atlas: map container dimensions invalid',size.width,size.height);
+    return;
+  }
+  $('map-overlay').hidden=true;
+  $('map-stage').classList.remove('fallback-active');
+  $('map-stage').classList.add('map-live');
+  requestAnimationFrame(()=>{try{app.map?.resize?.()}catch(error){console.warn('Atlas map resize',error)}});
+}
 function changeSourceAttribution(){
   if(!app.source)return;
   $('attribution').textContent=`${app.source.title} · ${app.source.licence}`;
