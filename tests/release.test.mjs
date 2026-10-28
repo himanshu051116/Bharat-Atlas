@@ -43,3 +43,16 @@ test('MapLibre cannot reduce the interactive map container to zero height',()=>{
  assert.match(app,/size\.height<150/);
  assert.match(app,/app\.map\?\.resize\?\.\(\)/);
 });
+
+
+test('map wheel zoom preserves the geographic center and coalesces events',()=>{
+ const app=read('public-site/app.bundle.js');
+ assert.match(app,/scrollZoom:false/);
+ assert.match(app,/installStableMapZoom\(mapInstance\)/);
+ assert.match(app,/addEventListener\('wheel',handleWheel,\{passive:false\}\)/);
+ assert.match(app,/event\.preventDefault\(\)/);
+ assert.match(app,/frame=requestAnimationFrame\(/);
+ assert.match(app,/map\.jumpTo\(\{zoom,center:map\.getCenter\(\)\}\)/);
+ assert.match(app,/map\.easeTo\(\{zoom:target,center:map\.getCenter\(\),duration:/);
+ assert.doesNotMatch(app,/app\.map\.zoomIn\(\{duration:/);
+});

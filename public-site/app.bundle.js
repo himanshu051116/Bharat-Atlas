@@ -2707,14 +2707,56 @@ function mapLoadComplete(){if(!app.map||app.rendererStatus==='fallback')return;a
 
   else if(app.boundaryLoadFailed&&app.landcover){hideOverlay();updateRendererStatus('rendering','Physical-only GPU preview; no political boundaries loaded');}
   else overlay('Loading boundary data','Preparing the region geometry.');}
+
+// Wheel/trackpad navigation stays anchored to the current map center.
+// The built-in cursor-anchored scroll handler caused the map to drift north
+// when users zoomed with the pointer above the panel center.
+function installStableMapZoom(map){
+  const canvasContainer=map.getCanvasContainer();
+  let pendingDelta=0, frame=0;
+  const handleWheel=event=>{
+    event.preventDefault();
+    event.stopPropagation();
+    if(!app.ready||app.map!==map)return;
+    const multiplier=event.deltaMode===1?16:event.deltaMode===2?canvasContainer.clientHeight:1;
+    const delta=event.deltaY*multiplier;
+    if(!Number.isFinite(delta)||Math.abs(delta)<.01)return;
+    pendingDelta+=Math.max(-125,Math.min(125,delta));
+    if(frame)return;
+    frame=requestAnimationFrame(()=>{
+      frame=0;
+      if(!app.ready||app.map!==map){pendingDelta=0;return}
+      const amount=Math.max(-210,Math.min(210,pendingDelta));
+      pendingDelta=0;
+      const zoom=Math.max(map.getMinZoom(),Math.min(map.getMaxZoom(),map.getZoom()-amount*.0019));
+      if(Math.abs(zoom-map.getZoom())<.0001)return;
+      if(journey.playing)journeyPause();
+      map.jumpTo({zoom,center:map.getCenter()});
+    });
+  };
+  canvasContainer.addEventListener('wheel',handleWheel,{passive:false});
+  map.on('remove',()=>{
+    if(frame)cancelAnimationFrame(frame);
+    canvasContainer.removeEventListener('wheel',handleWheel);
+  });
+}
+function zoomMapCentered(direction){
+  if(!app.map){adjustFallbackZoom(direction>0?1.25:.8);return}
+  journeyPause();
+  const map=app.map, target=Math.max(map.getMinZoom(),Math.min(map.getMaxZoom(),map.getZoom()+direction));
+  map.stop();
+  map.easeTo({zoom:target,center:map.getCenter(),duration:atlasMotionOff()?0:145,essential:false});
+}
+
 function initMap(){
   if(!window.maplibregl?.Map){rendererFallback('Map engine unavailable','The MapLibre library could not load. Use the accessible SVG viewer instead.');return false}
   if(typeof window.maplibregl.supported==='function'&&!window.maplibregl.supported()){rendererFallback('WebGL unavailable','The browser cannot render this vector map. Use the SVG viewer instead.');return false}
   const attempt=++app.rendererAttempts;app.lastRendererAttemptAt=Date.now();
   updateRendererStatus('trying');
   try{
-    app.map=new window.maplibregl.Map({container:'map',style:mapStyle(app.style,app.tileCatalog,app.transportCatalog),center:[79.5,22.6],zoom:3.25,minZoom:2,maxZoom:14,maxBounds:[[56,0],[105,45]],attributionControl:false,renderWorldCopies:false,dragRotate:false,pitchWithRotate:false});
+    app.map=new window.maplibregl.Map({container:'map',style:mapStyle(app.style,app.tileCatalog,app.transportCatalog),center:[79.5,22.6],zoom:3.25,minZoom:2,maxZoom:14,scrollZoom:false,fadeDuration:0,maxBounds:[[56,0],[105,45]],attributionControl:false,renderWorldCopies:false,dragRotate:false,pitchWithRotate:false});
     const mapInstance=app.map;
+    installStableMapZoom(mapInstance);
     const canvas=app.map.getCanvas?.();
     canvas?.addEventListener?.('webglcontextlost', e=>{
       e.preventDefault?.();if(attempt!==app.rendererAttempts||app.map!==mapInstance)return;
@@ -2891,7 +2933,7 @@ function wire(){
   });
   $('place-toggle').addEventListener('click',()=>{app.places=!app.places;app.selectedPlace=null;$('place-toggle').setAttribute('aria-pressed',String(app.places));renderRegions();updateFocus();updateMapFilters()});
   $('qa-toggle').addEventListener('click',()=>{app.checks=!app.checks;$('qa-toggle').setAttribute('aria-pressed',String(app.checks));updateMapFilters()});
-  $('zoom-in').addEventListener('click',()=>app.map?app.map.zoomIn({duration:atlasMotionOff()?0:330}):adjustFallbackZoom(1.25));$('zoom-out').addEventListener('click',()=>app.map?app.map.zoomOut({duration:atlasMotionOff()?0:330}):adjustFallbackZoom(.8));
+  $('zoom-in').addEventListener('click',()=>zoomMapCentered(1));$('zoom-out').addEventListener('click',()=>zoomMapCentered(-1));
   for(const id of ['reset-map','reset-zoom','clear-focus'])$(id).addEventListener('click',()=>fitAll());
   $('import-btn').addEventListener('click',()=>$('file-input').click());$('file-input').addEventListener('change',()=>importFile($('file-input').files?.[0]));$('download-qa').addEventListener('click',downloadQA);$('download-svg').addEventListener('click',downloadSVG);
   $('my-location').addEventListener('click',()=>{

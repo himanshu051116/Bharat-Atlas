@@ -241,3 +241,8 @@
 #map.map-canvas canvas.maplibregl-canvas {
   max-width: none;
 }
+
+
+/* v1.11.3: keep map wheel input inside the map and avoid layout relayout while zooming. */
+#map-stage{overscroll-behavior:contain;contain:layout paint;}
+#map.map-canvas{overscroll-behavior:contain;touch-action:none;}
