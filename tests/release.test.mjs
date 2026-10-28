@@ -125,3 +125,11 @@ test('Importer can be cancelled without retaining worker',()=>{
  assert.match(app,/worker\.terminate\(\)/);
  assert.match(app,/app\.soiImportWorker=null/);
 });
+
+
+test('sourced state catalogue entries are not described as unmapped',()=>{
+ const app=read('public-site/app.bundle.js');
+ assert.match(app,/const sourced=soiPolygonForName\(x\.name\)/);
+ assert.match(app,/Locally loaded SoI May 2026 polygon/);
+ assert.match(app,/ATLAS_REGIONS\.filter\(x=>soiPolygonForName\(x\.name\)\)\.length/);
+});

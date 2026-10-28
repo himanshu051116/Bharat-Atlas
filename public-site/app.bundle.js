@@ -2587,7 +2587,10 @@ function currentSearchResults(){
     if(feature&&!base.some(e=>e.kind==='region'&&normalizeQuery(e.name)===normalizeQuery(matched.name)))
       base.push({kind:'region',name:feature.properties.name,subtitle:feature.properties.kind,entry:feature,rank:matched.rank});
   }
-  const fallbackRegions=allCatalogueMatches.filter(x=>!polygonsByName.has(normalizeQuery(x.name)));
+  const fallbackRegions=allCatalogueMatches.filter(x=>!polygonsByName.has(normalizeQuery(x.name))).map(x=>{
+    const sourced=soiPolygonForName(x.name);
+    return sourced?{...x,subtitle:'Locally loaded SoI May 2026 polygon · verify official map edition'}:x;
+  });
   if(!$('search-input').value.trim())return [...base,...fallbackRegions].sort((a,b)=>a.name.localeCompare(b.name));
   if(app.filter!=='all'||!app.places||app.source?.kind==='import')return [...base,...fallbackRegions].sort((a,b)=>(a.rank??0)-(b.rank??0)||a.name.localeCompare(b.name));
   base.push(...fallbackRegions);
