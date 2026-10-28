@@ -65,3 +65,16 @@ test('world wheel zoom also batches input without vertical cursor drift',()=>{
  assert.match(world,/y:a\.y-ry\*\(newW\/2\)/);
  assert.doesNotMatch(world,/zoom\(factor,coordsFromPoint\(e\.clientX,e\.clientY\),0\)/);
 });
+
+test('physical style variants never require political geometry',()=>{
+ const app=read('public-site/app.bundle.js'),html=read('public-site/index.html');
+ assert.doesNotMatch(app,/Political styles require a separately loaded boundary dataset/);
+ assert.match(app,/function updateStyleButtons\(\)/);
+ assert.match(app,/function applyStylePaint\(style\)/);
+ assert.match(app,/style==='terrain'&&!app\.features/);
+ assert.match(app,/if\(source\.kind==='import'\)setStyle\('terrain'\)/);
+ assert.match(app,/\['land-edge','line-opacity',opacity\]/);
+ assert.match(html,/data-style="ink"[^>]+>Muted land/);
+ assert.match(html,/data-style="outline"[^>]+>Coastlines/);
+ assert.match(html,/Survey of India administrative boundary downloads/);
+});
