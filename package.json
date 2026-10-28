@@ -1,0 +1,8 @@
+{
+  "name": "bharat-atlas-public-preview",
+  "private": true,
+  "version": "1.11.0",
+  "description": "Bharat Atlas research preview — redistributable public-safe build",
+  "scripts": {"build": "node scripts/build-site.mjs"},
+  "engines": {"node": ">=20"}
+}
