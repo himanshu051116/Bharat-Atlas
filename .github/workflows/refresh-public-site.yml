@@ -1,0 +1,58 @@
+name: Validate and publish Bharat Atlas public-safe archive
+on:
+  push:
+    branches: [atlas-v1.11-release-staging]
+    paths:
+      - 'release/atlas-v1.11/parts/**'
+      - '.github/workflows/refresh-public-site.yml'
+permissions:
+  contents: write
+jobs:
+  publish:
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: true
+      - name: Reassemble and verify complete public release
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat release/atlas-v1.11/parts/part-*.b64 | base64 --decode > site.zip
+          echo 'c35438af8770e11f7273aec03e074835f7abf092821c9474ab60df053f2d621e  site.zip' | sha256sum -c -
+          python3 - <<'PY'
+          import pathlib, zipfile, hashlib, json, sys
+          with zipfile.ZipFile('site.zip') as z:
+              entries=[i for i in z.infolist() if not i.is_dir()]
+              if len(entries)!=784 or z.testzip() is not None:sys.exit('Invalid public release archive')
+              for info in entries:
+                  p=info.filename
+                  if p.startswith('/') or '\\' in p or '..' in pathlib.PurePosixPath(p).parts:
+                      sys.exit('Unsafe ZIP path: '+p)
+                  if 'official-india/' in p.lower() or 'india-claim.geojson' in p.lower():
+                      sys.exit('Restricted political data: '+p)
+                  if ((info.external_attr>>16)&0o170000)==0o120000:
+                      sys.exit('Symlinks prohibited: '+p)
+              m=json.loads(z.read('build-manifest.json'))
+              if m.get('officialGeometryVerified') is not False or m.get('previewOnly') is not True or len(m['assets'])!=783:
+                  sys.exit('Public safety/manifest contract failed')
+              for item in m['assets']:
+                  b=z.read(item['path'])
+                  if len(b)!=item['bytes'] or hashlib.sha256(b).hexdigest()!=item['sha256']:
+                      sys.exit('Invalid file digest: '+item['path'])
+              z.extractall('public-site')
+          print('Verified and expanded all 784 public website files')
+          PY
+      - name: Commit corrected site archive and expanded site
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A -- site.zip public-site
+          if git diff --cached --quiet; then
+            echo 'Site already up to date'
+          else
+            git commit -m 'Update Bharat Atlas v1.11 complete public-safe site [skip ci]'
+            git push origin HEAD:atlas-v1.11-release-staging
+          fi
