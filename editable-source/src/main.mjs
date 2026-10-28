@@ -301,7 +301,7 @@ function setupFallbackSVG(svg){
   applyFallbackCamera();atlasToolkit?.fallbackReady(svg);atlasComparison?.fallbackReady(svg);
   const selected=app.selectedPlace||app.selectedCoordinate;if(selected)focusFallbackCoordinate(selected.lon,selected.lat);
 }
-const app={map:null,rendererFailure:null,ready:false,features:null,audit:null,source:null,selected:'',selectedCatalogRegion:null,selectedPlace:null,selectedCoordinate:null,hovered:'',style:'terrain',styleEpoch:0,labels:true,places:true,rivers:true,hydrology:null,shores:true,shorelines:null,landcover:null,checks:false,officialClaim:null,soiStates:null,soiStateDetails:null,soiOutlineDetails:null,filter:'all',requestId:0,abort:null,toastTimer:null,tileCatalog:null,transportCatalog:null,gazetteerPlaces:[],gazetteerMeta:null,searchIndex:null,indexMatches:[],indexSearchEpoch:0,boundaryLoadFailed:false,rendererAttempts:0,lastRendererAttemptAt:0,rendererStatus:'not_tested',rendererReason:''};
+const app={map:null,rendererFailure:null,ready:false,features:null,audit:null,source:null,selected:'',selectedCatalogRegion:null,selectedPlace:null,selectedCoordinate:null,hovered:'',style:'terrain',styleEpoch:0,labels:true,places:true,rivers:true,hydrology:null,shores:true,shorelines:null,landcover:null,checks:false,officialClaim:null,soiStates:null,soiStateDetails:null,soiOutlineDetails:null,soiSelected:'',soiImportWorker:null,filter:'all',requestId:0,abort:null,toastTimer:null,tileCatalog:null,transportCatalog:null,gazetteerPlaces:[],gazetteerMeta:null,searchIndex:null,indexMatches:[],indexSearchEpoch:0,boundaryLoadFailed:false,rendererAttempts:0,lastRendererAttemptAt:0,rendererStatus:'not_tested',rendererReason:''};
 function toast(msg){const el=$('toast');el.textContent=msg;el.hidden=false;clearTimeout(app.toastTimer);app.toastTimer=setTimeout(()=>{el.hidden=true},4100)}
 function overlay(title,message,button=false){$('map-stage').classList.remove('fallback-active');const el=$('map-overlay');el.classList.remove('fallback-preview');el.hidden=false;el.replaceChildren();const icon=document.createElement('span');icon.className=button?'error-icon':'spinner';icon.textContent=button?'!':'';const b=document.createElement('strong');b.textContent=title;const p=document.createElement('p');p.textContent=message;el.append(icon,b,p);if(button){const retry=document.createElement('button');retry.textContent='Retry loading';retry.addEventListener('click',()=>fetchPreview());el.append(retry)}}
 function rendererDiagnosticSnapshot(){
@@ -465,7 +465,7 @@ function currentSearchResults(){
 function renderRegions(){
   const list=$('region-list');list.replaceChildren();list.setAttribute('aria-busy','false');
   const entries=currentSearchResults();const searching=!!$('search-input').value.trim();
-  $('region-count').textContent=searching?`${entries.length} results`:`${entries.length} listed · ${app.features?.features.length||app.soiStates?.features.length||0} mapped polygons`; 
+  $('region-count').textContent=searching?`${entries.length} results`:`${entries.length} listed · ${app.features?.features.length||ATLAS_REGIONS.filter(x=>soiPolygonForName(x.name)).length} matched boundaries`; 
   if(!entries.length){const p=document.createElement('p');p.className='loading-regions';p.textContent='No matching place or region in the available catalogues';list.append(p);return}
   for(const entry of entries){
     const btn=document.createElement('button');btn.type='button';btn.className='region-option'+(entry.kind!=='region'?' place-result':'')+((app.selected===entry.name||(entry.kind==='region-catalog'&&app.selectedCatalogRegion?.name===entry.name)||(entry.kind==='place' && (entry.entry.id ? app.selectedPlace?.id===entry.entry.id : app.selectedPlace===entry.entry)))?' active':'');
@@ -478,20 +478,43 @@ function renderRegions(){
     btn.append(wrap,arrow);btn.addEventListener('click',()=>entry.kind==='coordinate'?selectCoordinate(entry.entry):entry.kind==='place'?selectPlace(entry.entry):entry.kind==='region-catalog'?selectCatalogRegion(entry.entry):selectRegion(entry.name));list.append(btn);
   }
 }
+function normalizeSoIRegionName(value){
+  const normalized=String(value||'').toLowerCase().replace(/&/g,'and').replace(/[^a-z0-9]/g,'');
+  const names={orissa:'odisha',uttaranchal:'uttarakhand',nctofdelhi:'delhi',pondicherry:'puducherry',
+    andamanandnicobar:'andamanandnicobarislands',jammuandkashmir:'jammuandkashmir',
+    dadraandnagarhavelianddamananddiu:'dadraandnagarhavelianddamananddiu'};
+  return names[normalized]||normalized;
+}
+function soiPolygonForName(name){
+  const key=normalizeSoIRegionName(name);
+  return app.soiStates?.features?.find(f=>{
+    const raw=f.properties?.STATE||f.properties?.name||'';
+    return !/^disputed/i.test(raw)&&normalizeSoIRegionName(raw)===key;
+  })||null;
+}
+
 function selectCatalogRegion(record){
   if(!record)return;
   const polygon=app.features?.features.find(f=>normalizeQuery(f.properties.name)===normalizeQuery(record.name));
   if(polygon){selectRegion(polygon.properties.name);return;}
   journeyPause();app.selected='';app.selectedPlace=null;app.selectedCoordinate=null;app.selectedCatalogRegion=record;
-  renderRegions();updateFocus();updateNearbyPlaces();
-  toast(`${record.name}: name/classification available; no vetted polygon is loaded`);
+  const officialPolygon=soiPolygonForName(record.name);
+  app.soiSelected=officialPolygon?String(officialPolygon.properties?.STATE||''):'';
+  renderRegions();updateFocus();updateNearbyPlaces();updateMapFilters();
+  if(officialPolygon){
+    if(app.map)app.map.fitBounds(featureBounds(officialPolygon),{padding:window.innerWidth<760?42:100,duration:atlasMotionOff()?0:280,maxZoom:10});
+    toast(`${record.name}: boundary from locally loaded SoI May 2026 archive; verify map edition for critical use`);
+  }else toast(`${record.name}: name/classification available; no vetted region polygon is loaded`);
   toggleMobile(false);
 }
 function updateFocus(){
   if(app.selectedCatalogRegion){
     const record=app.selectedCatalogRegion;
     $('focus-title').textContent=record.name+' · '+record.hindi;
-    $('focus-description').textContent=`${record.kind}. The India government directory lists this administrative unit, but this build contains no independently validated polygon for it. No outline or zoom extent has been inferred. See the official reference map for territorial representation.`;
+    const sourced=soiPolygonForName(record.name);
+    $('focus-description').textContent=sourced
+      ?`${record.kind}. Showing the shape from the locally imported, SHA-256-matched May 2026 Survey of India State Boundary Shapefile. The dataset contains disputed internal-area records; this visualization is not an independent cartographic certification. Compare against the official 2026 political map for critical use.`
+      :`${record.kind}. Name and classification are available, but no independently checked polygon is loaded for this region. No boundary or extent has been inferred. See the official reference map.`;
     $('clear-focus').hidden=false;return;
   }
 
@@ -524,6 +547,7 @@ function updateMapFilters(){
   if(app.map.getLayer('land-fill'))app.map.setLayoutProperty('land-fill','visibility',app.source?.kind==='import'?'none':'visible');
   if(app.map.getLayer('regions-selected'))app.map.setFilter('regions-selected',['==',['get','name'],app.selected||'@@NO_REGION@@']);
   if(app.map.getLayer('regions-hover'))app.map.setFilter('regions-hover',['==',['get','name'],app.hovered||'@@NO_REGION@@']);
+  if(app.map.getLayer('soi-state-selected'))app.map.setFilter('soi-state-selected',['==',['get','STATE'],app.soiSelected||'@@NO_SOI_SELECTION@@']);
   if(app.map.getLayer('region-labels'))app.map.setLayoutProperty('region-labels','visibility',app.labels?'visible':'none');
   for(const id of ['pilot-city-dots','pilot-city-labels']){if(app.map.getLayer(id))app.map.setLayoutProperty(id,'visibility',app.places&&app.source?.kind!=='import'?'visible':'none')}
   if(app.map.getLayer('pilot-place-selected'))app.map.setFilter('pilot-place-selected',['==',['get','name'],app.selectedPlace?.source==='gazetteer'?'@@NO_PLACE@@':(app.selectedPlace?.name||'@@NO_PLACE@@')]);
@@ -635,6 +659,19 @@ function initMap(){
       // Keep the SVG visible until the user explicitly retries the renderer.
     });
     app.map.on('load',()=>{if(attempt!==app.rendererAttempts)return;mapLoadComplete()});
+    app.map.on('click','soi-state-fill',e=>{
+      if(atlasToolkit?.measureEnabled()||app.style!=='terrain')return;
+      const original=String(e.features?.[0]?.properties?.STATE||'');
+      if(!original)return;
+      const name=normalizeSoIRegionName(original);
+      const record=ATLAS_REGIONS.find(r=>normalizeSoIRegionName(r.name)===name);
+      if(record)selectCatalogRegion(record);
+      else toast('Survey of India feature: '+original+' · special internal-area record; check the official source notes.');
+    });
+    app.map.on('mousemove','soi-state-fill',e=>{
+      if(app.style==='terrain'&&e.features?.length)app.map.getCanvas().style.cursor='pointer';
+    });
+    app.map.on('mouseleave','soi-state-fill',()=>{app.map.getCanvas().style.cursor=''});
     app.map.on('click','regions-fill',e=>{if(atlasToolkit?.measureEnabled())return;const n=e.features?.[0]?.properties?.name;if(n)selectRegion(n)});
     app.map.on('mousemove','regions-fill',e=>{const n=e.features?.[0]?.properties?.name||'';if(app.hovered!==n){app.hovered=n;updateMapFilters()}app.map.getCanvas().style.cursor=n?'pointer':''});
     app.map.on('mouseleave','regions-fill',()=>{app.hovered='';updateMapFilters();app.map.getCanvas().style.cursor=''});
@@ -740,7 +777,7 @@ function loadLocalSoIBoundary(file){
   catch(error){button.disabled=false;status.textContent='The archive importer could not start in this browser. Try an up-to-date desktop browser.';console.warn('SoI worker unavailable',error);return;}
   app.soiImportWorker=worker;
   if(cancelButton){cancelButton.hidden=false;cancelButton.disabled=false;}
-  const timeout=setTimeout(()=>{worker.terminate();if(app.soiImportWorker===worker)app.soiImportWorker=null;if(cancelButton)cancelButton.hidden=true;button.disabled=false;status.textContent='Import timed out. Check available browser memory and retry with the official archive on a desktop.'},230000);
+  const timeout=setTimeout(()=>{worker.terminate();if(app.soiImportWorker===worker)app.soiImportWorker=null;if(cancelButton)cancelButton.hidden=true;button.disabled=false;status.textContent='Import timed out. Check browser memory and retry with the official archive on a desktop.'},230000);
   const done=()=>{clearTimeout(timeout);worker.terminate();if(app.soiImportWorker===worker)app.soiImportWorker=null;button.disabled=false;if(cancelButton)cancelButton.hidden=true;$('soi-file-input').value=''};
   if(cancelButton)cancelButton.onclick=()=>{done();status.textContent='Import cancelled. No archive data was stored or uploaded.';};
   worker.onmessage=e=>{
@@ -756,12 +793,15 @@ function loadLocalSoIBoundary(file){
     }else{
       app.soiStates=data;
       app.soiStateDetails=details;
+      app.soiSelected='';
+      renderRegions();updateFocus();
       status.textContent='Official archive SHA-256 verified; '+details.features+' polygons reprojected. Rendering state boundaries…';
     }
     if(app.ready)syncMapData();
     updateStyleButtons();
     if(details.type==='states'){
       setStyle('terrain');
+      applyStylePaint('terrain');
       $('region-coverage-tag').textContent=details.features+' SOI-FORMAT OUTLINES · LOCAL IMPORT · REVIEW NEEDED';
       $('map-source-status').textContent='LOCAL SOI-FORMAT ADMINISTRATIVE SHAPES · SOURCE REVIEW PENDING';
     }else{
@@ -804,7 +844,7 @@ function updateStyleButtons(){
     if(btn.dataset.style==='terrain'){
       btn.disabled=!(app.features||app.soiStates);
       btn.textContent=app.soiStates?'Survey of India states':app.features?'Imported regions':'Borders: import GeoJSON';
-      btn.title=app.features?'User-provided regional polygons — not official or verified':'Official political geometry is not bundled. Import licensed GeoJSON to enable regional borders.';
+      btn.title=app.soiStates?'Hash-matched May 2026 SoI archive (local import); not an independently certified 2026 political map':app.features?'User-provided regional polygons — not official or verified':'Load the Survey of India archive locally or import licensed GeoJSON';
     }
   });
   const note=document.getElementById('atlas-style-note');
@@ -832,7 +872,10 @@ function applyStylePaint(style){
     ['graticule','line-opacity',gridOpacity],
     ['regions-fill','fill-opacity',app.features?(style==='physical'?0.07:style==='outline'?0.10:0.86):0],
     ['regions-border','line-opacity',app.features?(style==='physical'?0.36:style==='outline'?0.96:0.76):0],
-    ['regions-border','line-color',style==='outline'?'#335f57':'#718a7f']
+    ['regions-border','line-color',style==='outline'?'#335f57':'#718a7f'],
+    ['soi-state-line','line-opacity',style==='terrain'?0.92:0],
+    ['soi-state-fill','fill-opacity',style==='terrain'?0.10:0],
+    ['soi-state-selected','line-opacity',style==='terrain'?1:0]
   ];
   if(app.features){
     const palette=style==='outline'?['#fafcfb','#fafcfb','#fafcfb','#fafcfb','#fafcfb']
