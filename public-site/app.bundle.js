@@ -2602,7 +2602,7 @@ function currentSearchResults(){
 function renderRegions(){
   const list=$('region-list');list.replaceChildren();list.setAttribute('aria-busy','false');
   const entries=currentSearchResults();const searching=!!$('search-input').value.trim();
-  $('region-count').textContent=searching?`${entries.length} results`:`${entries.length} listed · ${app.features?.features.length||0} mapped`; 
+  $('region-count').textContent=searching?`${entries.length} results`:`${entries.length} listed · ${app.features?.features.length||app.soiStates?.features.length||0} mapped polygons`; 
   if(!entries.length){const p=document.createElement('p');p.className='loading-regions';p.textContent='No matching place or region in the available catalogues';list.append(p);return}
   for(const entry of entries){
     const btn=document.createElement('button');btn.type='button';btn.className='region-option'+(entry.kind!=='region'?' place-result':'')+((app.selected===entry.name||(entry.kind==='region-catalog'&&app.selectedCatalogRegion?.name===entry.name)||(entry.kind==='place' && (entry.entry.id ? app.selectedPlace?.id===entry.entry.id : app.selectedPlace===entry.entry)))?' active':'');
@@ -2887,7 +2887,7 @@ function loadLocalSoIBoundary(file){
     }else{
       app.soiStates=data;
       app.soiStateDetails=details;
-      status.textContent='State/UT boundary layer loaded from '+details.features+' local polygons. Dataset format validated; compare against SoI 2026 political map before relying on it.';
+      status.textContent='Official archive SHA-256 verified; '+details.features+' polygons reprojected. Rendering state boundaries…';
     }
     if(app.ready)syncMapData();
     updateStyleButtons();
@@ -2899,6 +2899,23 @@ function loadLocalSoIBoundary(file){
       $('map-source-status').textContent='SOI 2026 NATIONAL OUTLINE · 1:16M · STATES NOT INSTALLED';
     }
     if(app.rendererStatus==='fallback'&&app.landcover)rendererFallback('Static research viewer','Official outline imported locally; interactive renderer is unavailable.');
+    const sourceNotice=document.querySelector('.notice span:not(.notice-icon)');
+    if(sourceNotice)sourceNotice.textContent='Source: Survey of India, Government of India. The locally selected official '+(details.type==='states'?'May 2026 State Boundary archive':'February 2026 national outline ZIP')+' passed the pinned SHA-256 integrity check. Map content is displayed only in this browser session; no SoI data is uploaded. Independent comparison with the 13th edition 2026 political map is still advised.';
+    if(details.type==='states'){
+      let attempts=0;
+      const finishRender=()=>{
+        let rendered=0;
+        try{if(app.map?.getLayer('soi-state-line'))rendered=app.map.queryRenderedFeatures({layers:['soi-state-line']}).length}catch(_){}
+        if(rendered>0&&app.map?.isSourceLoaded('soi-state-boundaries')){
+          status.textContent='Official SoI May 2026 archive hash verified · '+details.features+' state-area polygons installed · '+rendered+' boundary segments currently visible. Review against the 2026 political map for critical use.';
+        }else if(++attempts<70){
+          setTimeout(finishRender,400);
+        }else{
+          status.textContent='Official state polygons installed, but the renderer has not yet finished drawing them. Try zooming or reloading the physical view.';
+        }
+      };
+      setTimeout(finishRender,400);
+    }
     done();
   };
   worker.onerror=event=>{done();status.textContent='Browser archive reader failed. Use a ZIP containing the State Boundary .shp, .dbf, .prj and .shx files.';console.warn('Official archive reader error',event.message)};

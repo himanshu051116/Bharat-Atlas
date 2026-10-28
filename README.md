@@ -14,3 +14,15 @@ Source code is in \`editable-source/\`. The deployable, edited site is in \`publ
 - The official SoI political boundaries, geographic completeness, physical device performance, and real browser interaction **remain unverified**. Do not describe the map as certified or fit for legal or navigational use.
 
 The world atlas uses public-domain Natural Earth historical generalized features; its inaccurate generalized India polygon is hidden. It is not a political map of India.
+
+## Load official Survey of India political boundaries (on-device)
+
+The public GitHub/Vercel build **does not redistribute** Survey of India's Shapefile data. Survey of India's site copyright policy requires permission for reproduction, even though the 2021 geospatial guidelines allow digital display. Source materials are therefore downloaded directly from SoI by the visitor and interpreted locally by a sandboxed browser worker. No official archive is sent to Bharat Atlas servers or stored persistently.
+
+1. Open the app and expand **Load official Survey of India boundaries** in the sidebar.
+2. Download the May 2026 [State/District/Subdistrict ABDB RAR](https://surveyofindia.gov.in/documents/State_District_Subdistrict_PAN%20INDIA.rar) from SoI (202,524,438 bytes), or the February 2026 [national outline ZIP](https://surveyofindia.gov.in/documents/Outline_of_India.zip) (7,513,409 bytes).
+3. Click **Open downloaded RAR / ZIP** and choose the file in a desktop browser. The RAR importer extracts **only** the State Boundary Shapefile, not the full district data, reprojects the official Lambert Conformal Conic coordinates to WGS84, and draws the source polygons on the map. The smaller ZIP draws the one-feature national outline; it does not supply the states.
+4. The importer checks the **SHA-256** digest against the specific original SoI archives downloaded on October 28, 2026. A changed archive is rejected pending a new provenance review. Inspect the status message to ensure the lines finished rendering.
+5. The source comprises **40 State Boundary polygons**, including **four specially marked disputed internal areas**. Do not collapse them into the 36-item administrative name list without independent geographic review. The official SoI 2026 [political map](https://surveyofindia.gov.in/pages/political-map-of-india) is the reference for cartographic comparison.
+
+**Source: Survey of India, Government of India.** Local use of officially published source data must comply with its terms; this website does not claim Survey of India endorsement. A successfully loaded, SHA-256-verified source is not the same as independent confirmation that the displayed geometry matches every boundary in the current 2026 political-map edition.
