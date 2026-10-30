@@ -1,7 +1,0 @@
-Natural Earth 1:50m Populated Places — public domain.
-Source: https://github.com/nvkelso/natural-earth-vector/blob/master/geojson/ne_50m_populated_places.geojson
-Original pinned Git blob: f692f6a1311569612a2d3fbb3554e97ec0bfe64c
-Subset filtered to 71 India-tagged records. Hindi labels and point locations retained; editorial search aliases added.
-Regional labels manually reconciled from known naming discrepancies; NOT independently survey-certified.
-Copyright: Natural Earth data is public domain. https://www.naturalearthdata.com/about/terms-of-use/
-No political boundary or address-precision claims. This subset is not exhaustive.

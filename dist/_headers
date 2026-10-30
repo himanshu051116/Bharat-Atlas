@@ -1,7 +1,0 @@
-/*
-  X-Content-Type-Options: nosniff
-  Referrer-Policy: strict-origin-when-cross-origin
-  X-Frame-Options: DENY
-  X-Robots-Tag: noindex, nofollow
-/data/*
-  Cache-Control: public, max-age=300, s-maxage=3600

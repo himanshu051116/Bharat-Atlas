@@ -1,8 +1,0 @@
-Bharat Atlas v0.21 physical coastline / inland-water research overlay.
-
-GSHHG 2.3.6 as distributed in basemap-data 2.0.0 (LGPL-3.0-or-later).
-Attribution: GSHHG; Paul Wessel and Walter H. F. Smith; Basemap Data contributors.
-Original: https://www.soest.hawaii.edu/wessel/gshhg/
-Modifications: GSHHS type 1 coastlines and type 2 lakes extracted at intermediate resolution; clipped to (68E,6N,99E,38N), removed artificial frame-edge line segments, generalized unlabelled shorelines, rounded coordinates, GeoJSON / MVT tiling.
-Reuse under LGPL-3.0-or-later. Licence copies COPYING.GPL and COPYING.LESSER accompany data.
-This physical coast/lake dataset includes adjacent countries and may omit/shift features; it does NOT define current borders, disputed territories, or land administration.

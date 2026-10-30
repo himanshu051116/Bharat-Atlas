@@ -1,7 +1,0 @@
-{
-  "officiallyVerified": false,
-  "licence": "LGPL-3.0-or-later",
-  "attribution": "GSHHG/WDBII 2.3.6; Wessel & Smith; basemap-data 2.0.0; LGPL-3.0-or-later",
-  "sourceUrl": "https://www.soest.hawaii.edu/wessel/gshhg/",
-  "notes": "Historic generalized coastlines, lake shorelines and rivers; no roads, no sovereign border geometry. Neighbouring-country features included."
-}
