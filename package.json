@@ -1,7 +1,7 @@
 {
   "name": "bharat-atlas-public-preview",
   "private": true,
-  "version": "1.12.0",
+  "version": "1.13.0",
   "description": "Bharat Atlas research viewer with locally imported official geospatial boundaries, hardened import and verified rendering",
   "scripts": {
     "build": "node --test tests/release.test.mjs && node scripts/build-site.mjs"

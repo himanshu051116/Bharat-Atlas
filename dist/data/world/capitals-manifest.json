@@ -1,0 +1,27 @@
+{
+  "schema": "bharat-world-capital-manifest-v1",
+  "sourceLibrary": "countryinfo",
+  "sourceVersion": "0.1.2",
+  "sourceLicense": "MIT",
+  "sourceFileListSha256": "71a538b8bc6a4565df5e5cf890d885a72b790cb5fbc4b08daaa06e8d079dd36b",
+  "status": "legacy snapshot; may omit or misclassify current national capitals",
+  "count": 163,
+  "skipped": [
+    "Chile",
+    "Norway",
+    "Timor-Leste",
+    "France",
+    "Palestine",
+    "Myanmar",
+    "Hungary",
+    "Bulgaria",
+    "United Kingdom",
+    "Antarctica",
+    "N. Cyprus",
+    "Somaliland",
+    "Montenegro",
+    "Kosovo"
+  ],
+  "file": "world-capital-references.json",
+  "sha256": "941e75eba1e9a11d880953d87fdd882330084de73cfef9a82608d9da330d8da1"
+}

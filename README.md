@@ -38,3 +38,10 @@ The public GitHub/Vercel build **does not redistribute** Survey of India's Shape
 - Uses a pinned npm lockfile after generating and reviewing it in CI, for reproducible deployment builds.
 
 The public website remains a **research preview** without automatically bundled Survey of India geometries. The reference source must be downloaded from Survey of India and imported locally by each visitor; import validation does not constitute independent SoI map-edition certification.
+
+
+### v1.13 — optional local map persistence (30 October 2026)
+
+The official Survey of India state and national-outline datasets are **not bundled or redistributed** with this repository. After importing a verified original archive, visitors may explicitly check **Remember verified converted boundaries on this device**. This saves the processed GeoJSON in the current browser's origin-scoped IndexedDB (not the original RAR/ZIP), enabling a fast local restore on later visits without a repeated 193 MB import. The setting is unchecked by default. **Clear saved local boundaries** deletes locally remembered converted state/outline data and removes those layers from the current tab, but never deletes downloaded files. Failed/quota-limited saves do not invalidate the current session's imported data.
+
+Cached geometry is only labelled as *previously imported from a SHA-256-checked archive*. It is not fresh re-verification of the government source, not independently matched against newer political map editions, and not automatically synchronized to a server. Browser private mode or storage eviction may remove the cache.

@@ -1,0 +1,14 @@
+{
+  "format": "BharatAtlasHydrology1",
+  "officiallyVerified": false,
+  "sourceUrl": "https://www.soest.hawaii.edu/wessel/gshhg/",
+  "dataset": "GSHHG 2.3.6 / WDBII via basemap-data 2.0.0",
+  "licence": "LGPL-3.0-or-later",
+  "attribution": "GSHHG / WDBII; Paul Wessel (University of Hawai'i), Walter H. F. Smith (NOAA); derived from Basemap Data 2.0.0",
+  "sha256": "27884a5cc5b9039ed21ccf6cc8f5626cb05375d594024df214802336a06aac2a",
+  "featureCount": 1723,
+  "extent": [68,6,99,38],
+  "riverNamesVerified": false,
+  "sourceVintage": "GSHHG 2.3.6 (2016)",
+  "limitations": "Generalized and historical; includes watercourses in neighboring countries; not an authoritative hydrology survey, no river names supplied."
+}

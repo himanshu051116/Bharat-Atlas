@@ -35,6 +35,9 @@
 <a href="https://surveyofindia.gov.in/documents/Outline_of_India.zip" target="_blank" rel="noopener noreferrer">Or download SoI national outline (ZIP, approximately 7.2 MB) ↗</a>
 <button id="soi-import-btn" type="button">2. Open downloaded RAR / ZIP</button>
 <button id="soi-cancel-btn" type="button" hidden>Cancel import</button>
+<label class="soi-cache-option" for="soi-remember"><input id="soi-remember" type="checkbox"/> Remember verified converted boundaries on this device (optional; may use significant storage)</label>
+<button id="soi-clear-cache" type="button" class="soi-cache-clear">Clear saved local boundaries</button>
+<p id="soi-cache-status" role="status" aria-live="polite">Not saved. Selecting Remember stores only converted geometry locally in this browser; no upload occurs.</p>
 <input type="file" id="soi-file-input" accept=".rar,.zip,application/x-rar-compressed,application/zip" hidden/>
 <p id="soi-import-status" role="status" aria-live="polite">State outlines and the national outline are separate official data products. The state archive can require over 500 MB of temporary memory while processing; use an up-to-date desktop browser. Neither source is independently certified as matching the 2026 political map in this viewer.</p>
 <a href="https://surveyofindia.gov.in/pages/political-map-of-india" target="_blank" rel="noopener noreferrer">Compare with Survey of India's 2026 political map ↗</a>
@@ -126,6 +129,7 @@
   </div>
   <dialog id="source-dialog"><div class="dialog-head"><h2>Map source and limitations</h2><button id="close-dialog" type="button" aria-label="Close dialog">✕</button></div><p>Our political geography should eventually follow Survey of India's 2026 reference, including the entire extent claimed by India. Some areas are administered by Pakistan or China; a source-aware atlas must distinguish claims from actual administration.</p><p id="dialog-source">The public release has NO certified national or state political boundaries. Physical coastline geometry is not a territorial claim. See the official Survey of India 2026 political map.</p><p>City-centre points are approximate demonstrations, not a national gazetteer. The check markers are approximate sample points. They cannot detect the exact alignment of a frontier, polygon overlap or every missing area. An official-data licence, polygon-by-polygon GIS comparison and independent review remain mandatory before a validated release.</p><p><strong>To view regional boundaries:</strong> download appropriately licensed, source-verified administrative polygons, convert them to GeoJSON with <code>properties.name</code> and Polygon/MultiPolygon geometry, and use <strong>Import GeoJSON</strong>. Imported data is local to your browser and not automatically certified. See <a href="https://surveyofindia.gov.in/pages/administrative-boundary-data-base-abdb-" target="_blank" rel="noopener noreferrer">Survey of India administrative boundary downloads</a> and the source&#39;s terms before redistribution.</p><div class="dialog-actions"><a href="https://onlinemaps.surveyofindia.gov.in/" target="_blank" rel="noopener noreferrer">Official data portal ↗</a><button id="dialog-ok" type="button">Understood</button></div></dialog>
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <script defer src="./soi-local-cache.js"></script>
   <script type="module" src="./atlas-maplibre-loader.mjs"></script>
 <script defer src="./atlas-visitor.js"></script>
 </body>

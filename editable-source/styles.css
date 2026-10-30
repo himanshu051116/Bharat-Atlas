@@ -268,3 +268,9 @@
 .soi-install-content #soi-cancel-btn:not([hidden]){border:1px solid #b75a48;background:#fff6f2;color:#983b2e;min-height:40px}
 .soi-install-content button:focus-visible,.style-picker button:focus-visible{outline:3px solid #efaa53;outline-offset:3px}
 @media (prefers-reduced-motion:reduce){.map-stage,.map-card,.soi-install,.style-btn{scroll-behavior:auto;transition:none!important}}
+
+/* v1.13 opt-in offline boundary storage */
+.soi-cache-option{display:flex;align-items:flex-start;gap:8px;font-size:11px;line-height:1.5;cursor:pointer;color:#315b4b}
+.soi-cache-option input{flex:none;margin-top:2px;width:17px;height:17px;accent-color:#14694e}
+.soi-install-content button.soi-cache-clear{background:#fff;color:#7d352e;border:1px solid #cfa9a0}
+#soi-cache-status{font-size:11px;color:#426553;overflow-wrap:anywhere}

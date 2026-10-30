@@ -1,0 +1,12 @@
+{
+  "schema": "bharat-world-shoreline-manifest-v1",
+  "file": "world-shorelines.json",
+  "sha256": "25d94f164102366053efc7f2661878c2435f61cb94ee5c6f53a52c80515bbe5c",
+  "bytes": 1291648,
+  "coastSegments": 1150,
+  "inlandWaterParts": 650,
+  "licence": "LGPL-3.0-or-later",
+  "source": "GSHHG/WDBII 2.3.6 via basemap-data 2.0.0",
+  "current": false,
+  "politicalAuthority": false
+}

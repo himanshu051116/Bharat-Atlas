@@ -1,0 +1,19 @@
+{
+  "format": "BharatAtlasLandcover1",
+  "dataset": "GSHHG 2.3.6 via basemap-data 2.0.0",
+  "sourceUrl": "https://www.soest.hawaii.edu/wessel/gshhg/",
+  "licence": "LGPL-3.0-or-later",
+  "attribution": "GSHHG 2.3.6; Wessel & Smith; Basemap Data 2.0.0",
+  "extent": [
+    68,
+    6,
+    99,
+    38
+  ],
+  "officiallyVerified": false,
+  "administrativeBoundaries": false,
+  "featureCount": 41,
+  "bytes": 158402,
+  "sha256": "dbbdefe951a125968a6817c0b28f8bb33d2683655ed1e9fcf658b39ff2804f30",
+  "purpose": "Historical land-water physical mask; includes all nearby land and lakes, not territory claims or official borders"
+}

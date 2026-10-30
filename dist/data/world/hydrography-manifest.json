@@ -1,0 +1,11 @@
+{
+  "schema": "bharat-world-hydrography-manifest-v1",
+  "file": "world-hydrography.json",
+  "sha256": "59ede5641617f00e19c595c56aad7f94c65a6ebd10f5c4adb69017042964b62f",
+  "bytes": 302301,
+  "source": "GSHHG/WDBII 2.3.6 via basemap-data 2.0.0",
+  "licence": "LGPL-3.0-or-later",
+  "worldLines": 7000,
+  "named": false,
+  "current": false
+}

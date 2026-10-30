@@ -2905,6 +2905,76 @@ async function importFile(file){if(!file)return;
   finally{$('file-input').value=''}
 }
 
+
+async function restoreRememberedSoIBoundaries(){
+  const cache=window.BharatAtlasLocalBoundaries;
+  const status=$('soi-cache-status');
+  if(!cache?.available()){status.textContent='Local saving is unavailable in this browser. You can still import archives for the current session.';return}
+  try{
+    const entries=await cache.load();
+    if(app.soiImportWorker||app.soiStates||app.soiOutlineDetails)return;
+    if(!entries.length)return;
+    for(const entry of entries){
+      if(entry.type==='states'){app.soiStates=entry.data;app.soiStateDetails=entry.details;app.soiSelected=''}
+      if(entry.type==='outline'){app.officialClaim=entry.data;app.soiOutlineDetails=entry.details}
+    }
+    $('soi-remember').checked=true;
+    updateStyleButtons();
+    renderRegions();
+    updateFocus();
+    if(app.ready)syncMapData();
+    if(app.soiStates){
+      app.style='terrain';
+      updateStyleButtons();
+      applyStylePaint('terrain');
+      $('region-coverage-tag').textContent=app.soiStates.features.length+' LOCAL CACHED SOI SOURCE POLYGONS · MAP EDITION REVIEW NEEDED';
+      $('map-source-status').textContent='CACHED SOI SOURCE BOUNDARIES · PREVIOUSLY VERIFIED ARCHIVE · REVIEW NEEDED';
+      $('soi-import-status').textContent='Restored converted state-boundary geometry saved on this device. The original SoI archive was SHA-256 checked when imported; the local cache was not revalidated against a new archive.';
+    }else{
+      $('soi-import-status').textContent='Restored a previously imported national outline from this device. State boundaries still require the ABDB archive.';
+    }
+    const notice=document.querySelector('.notice span:not(.notice-icon)');
+    if(notice)notice.textContent='Locally stored Survey of India converted geometry from a previously SHA-256-checked import. This browser cache has not been independently verified against a newer map edition and is never uploaded.';
+    status.textContent='Restored '+entries.map(e=>e.type).join(' and ')+' from this browser. Clear saved local boundaries to remove this copy.';
+  }catch(error){
+    console.warn('Local SoI cache restore skipped',error);
+    status.textContent='Could not restore remembered boundaries. The live map remains usable; re-import the official archive if needed.';
+  }
+}
+function rememberSoIBoundaries(data,details){
+  const cache=window.BharatAtlasLocalBoundaries;
+  if(!$('soi-remember').checked||!cache?.available())return;
+  const status=$('soi-cache-status');
+  status.textContent='Saving converted geometry in this browser. The original archive will not be stored…';
+  // Schedule the storage clone separately from the first map render.
+  setTimeout(()=>{
+    cache.save(data,details).then(()=>{
+      status.textContent='Saved locally on this device. The original archive was SHA-256 checked at import; you can clear this converted copy anytime.';
+    }).catch(error=>{
+      console.warn('Local boundary saving failed',error);
+      status.textContent='Could not save converted boundaries (possibly browser storage quota). This session still has the imported map.';
+    });
+  },350);
+}
+async function clearRememberedSoIBoundaries(){
+  const cache=window.BharatAtlasLocalBoundaries,status=$('soi-cache-status');
+  if(!cache?.available()){status.textContent='Local boundary storage is not supported in this browser.';return}
+  if(app.soiImportWorker){status.textContent='Cancel the running import before clearing local boundaries.';return}
+  try{
+    await cache.clear();
+    $('soi-remember').checked=false;
+    app.soiStates=null;app.soiStateDetails=null;app.soiSelected='';
+    app.officialClaim=null;app.soiOutlineDetails=null;
+    app.style='physical';
+    if(app.ready)syncMapData();
+    updateStyleButtons();applyStylePaint('physical');renderRegions();updateFocus();
+    $('region-coverage-tag').textContent='ADMINISTRATIVE NAMES ONLY · NO VERIFIED REGIONAL GEOMETRY';
+    $('map-source-status').textContent='PHYSICAL GEOGRAPHY · NO ADMINISTRATIVE BORDERS';
+    $('soi-import-status').textContent='Saved boundary layers and the current loaded SoI layers cleared from this tab. You can import them again when needed.';
+    status.textContent='Cleared saved local boundary data. Nothing was deleted from the original files on your device.';
+  }catch(error){console.warn('Unable to clear SoI browser cache',error);status.textContent='Failed to clear local storage. Check browser site storage permissions.'}
+}
+
 function loadLocalSoIBoundary(file){
   const status=$('soi-import-status'),button=$('soi-import-btn');
   if(!file)return;
@@ -2927,6 +2997,7 @@ function loadLocalSoIBoundary(file){
     if(info.type==='error'){done();status.textContent='Archive not loaded: '+info.message;return}
     if(info.type!=='success')return;
     const {data,details}=info;
+    rememberSoIBoundaries(data,details);
     if(details.type==='outline'){
       app.officialClaim=data;
       app.soiOutlineDetails=details;
@@ -3115,7 +3186,8 @@ function wire(){
   for(const id of ['reset-map','reset-zoom','clear-focus'])$(id).addEventListener('click',()=>fitAll());
   $('import-btn').addEventListener('click',()=>$('file-input').click());$('file-input').addEventListener('change',()=>importFile($('file-input').files?.[0]));
   $('soi-import-btn').addEventListener('click',()=>$('soi-file-input').click());
-  $('soi-file-input').addEventListener('change',()=>loadLocalSoIBoundary($('soi-file-input').files?.[0]));$('download-qa').addEventListener('click',downloadQA);$('download-svg').addEventListener('click',downloadSVG);
+  $('soi-file-input').addEventListener('change',()=>loadLocalSoIBoundary($('soi-file-input').files?.[0]));
+  $('soi-clear-cache').addEventListener('click',clearRememberedSoIBoundaries);$('download-qa').addEventListener('click',downloadQA);$('download-svg').addEventListener('click',downloadSVG);
   $('my-location').addEventListener('click',()=>{
     if(!navigator.geolocation){toast('This browser does not provide geolocation');return;}
     toast('Requesting location permission from this device; nothing is uploaded.');
@@ -3160,6 +3232,7 @@ function initializeSafePhysicalMode(){
   },10000);
 }
 wire();$('state-total').textContent='28';$('ut-total').textContent='8';renderRegions();journeySync();updateDetailNarrative(3.1);updateLayerInventory();atlasRunCoverageInspection();initializeSafePhysicalMode();initMap();
+setTimeout(restoreRememberedSoIBoundaries,1100);
 // Local roads/rivers are optional; delayed/unreachable detail data must never block the base map.
 loadTileManifest().then(catalog=>{
   if(!catalog){$('tile-status').textContent='No local road or river tiles included · boundary-only research atlas';return}

@@ -1,0 +1,45 @@
+{
+  "schema": "bharat-world-detail-manifest-v1",
+  "publisher": "Natural Earth",
+  "licence": "Public domain",
+  "approvedForBundle": true,
+  "officialPoliticalAuthority": false,
+  "indiaAdministrativePolygonsCertified": false,
+  "layers": {
+    "cities": {
+      "count": 226,
+      "skipped": 0,
+      "sourceSha256": "bb0e530db71fda3b6bf30528281a34548f28c8bd5d9cdb396a707de57ae9f1b2",
+      "sourceComponents": {
+        ".geojson": "bb0e530db71fda3b6bf30528281a34548f28c8bd5d9cdb396a707de57ae9f1b2"
+      },
+      "sha256": "cadfc967c7d52c91af54598715bfb1ef0e7c721cfe86b676c473d99cf6023c74",
+      "bytes": 42001,
+      "sourceUrl": "https://github.com/nvkelso/natural-earth-vector/blob/master/geojson/ne_50m_populated_places_simple.geojson",
+      "sourceVersion": "Natural Earth 50m GitHub curated extract (226 included; NOT original full dataset)",
+      "licence": "Public domain",
+      "scale": "Natural Earth research representation, not legal boundary certification",
+      "sourceGitBlobSHA1": "3fad8f0038ba95c7758800f3f3c148418e7c76d1",
+      "curatedSubsetNotFullDataset": true,
+      "publisherFileFeatureCount": 1251,
+      "includesInheritedIndiaPlaceSubset": true
+    },
+    "peaks": {
+      "count": 81,
+      "skipped": 0,
+      "sourceSha256": "c52febe127596a1efdd53d5d3132e40ce1fb99969d740962d55f61ce14bbcd05",
+      "sourceComponents": {
+        ".geojson": "c52febe127596a1efdd53d5d3132e40ce1fb99969d740962d55f61ce14bbcd05"
+      },
+      "sha256": "a9614d38e9eff38f31b2c393087a48cf0baa40cf9baaf9a720dcd0e244073431",
+      "bytes": 14681,
+      "sourceUrl": "https://github.com/nvkelso/natural-earth-vector/blob/master/geojson/ne_50m_geography_regions_elevation_points.geojson",
+      "sourceVersion": "Natural Earth 50m GitHub curated extract (81 included; NOT original full dataset)",
+      "licence": "Public domain",
+      "scale": "Natural Earth research representation, not legal boundary certification",
+      "sourceGitBlobSHA1": "70050da0bc83a0736d6c6ca92a6a3a09b710e316",
+      "curatedSubsetNotFullDataset": true,
+      "publisherFileFeatureCount": 86
+    }
+  }
+}

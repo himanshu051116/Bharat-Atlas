@@ -133,3 +133,19 @@ test('sourced state catalogue entries are not described as unmapped',()=>{
  assert.match(app,/Locally loaded SoI May 2026 polygon/);
  assert.match(app,/ATLAS_REGIONS\.filter\(x=>soiPolygonForName\(x\.name\)\)\.length/);
 });
+
+test('opt-in on-device boundary cache is separate from public release files',()=>{
+ const html=read('public-site/index.html');
+ const cache=read('public-site/soi-local-cache.js');
+ const app=read('public-site/app.bundle.js');
+ assert.match(html,/id="soi-remember" type="checkbox"/);
+ assert.match(html,/id="soi-clear-cache"/);
+ assert.match(html,/soi-local-cache.js/);
+ assert.match(cache,/indexedDB\.open\(NAME,VERSION\)/);
+ assert.match(cache,/async function clear\(\)/);
+ assert.match(cache,/details\?\.verifiedOfficial!==true/);
+ assert.doesNotMatch(cache,/\bfetch\s*\(/);
+ assert.match(app,/function rememberSoIBoundaries\(data,details\)/);
+ assert.match(app,/function restoreRememberedSoIBoundaries/);
+ assert.match(app,/function clearRememberedSoIBoundaries/);
+});
